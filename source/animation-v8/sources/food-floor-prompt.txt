@@ -1,0 +1,15 @@
+Use case: identity-preserve. Finished hand-drawn animation sprite sheet for Kurt. Match the exact approved fawn pug from reference image 1 and the consistent poses in reference image 2. Preserve big expressive gentle brown eyes, eyebrows, brown mask and ears, short limbs, barrel body, curled tail, warm fawn gradients and soft brown ink line. No change of character, breed, palette, face or head size. Same physical scale and ground baseline throughout. 4 columns by 3 rows, 12 separate complete figures on GENUINELY transparent alpha, no text/grid/background/shadow or halo. Left-facing three-quarter like original A. Do not scale individual poses to fit their cells. No props except explicitly requested tiny treat.
+These twelve drawings are ONE continuous eating performance of the STANDING pug. Body and paw positions remain in exactly the original top-left reference standing stance.
+1 neutral original A.
+2 notices a tiny biscuit just in front of his forepaws, eyes glance down, curled tail lifts.
+3 head starts lowering toward biscuit, body remains standing.
+4 muzzle halfway to biscuit, ears flop forward subtly, all four paws remain supported.
+5 muzzle reaches biscuit ON THE GROUND, neck naturally bends, haunches stay up.
+6 mouth picks up biscuit, still head-down, biscuit disappears into mouth.
+7 chewing with eyes softly closed, head remains low.
+8 second chew, small cheek change, closed mouth, no loose food.
+9 muzzle rises halfway, swallowing.
+10 head back upright, content closed eyes, tongue briefly licks muzzle.
+11 neutral face, tail curl wag one way.
+12 neutral face, tail curl wag the other way.
+The first and last head and body must match neutral reference A. Keep the three visible paws and their ground positions unchanged. Tiny biscuit only in poses2–5. No huge open mouths, no drool, no text.

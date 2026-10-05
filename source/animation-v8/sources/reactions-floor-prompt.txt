@@ -1,0 +1,17 @@
+Use case: identity-preserve. Production 2D animation cels for Kurt, exactly the fawn pug in reference image 1 (approved original A). Image 2 is the newly drawn lowering sequence: match its cleanup and drawing identity too, but image 1 is authoritative for likeness.
+Warm classic hand-drawn children's animation look: soft rounded dark brown contour, fawn fur with gentle warm shadow, chocolate mask/ears, large gentle dark eyes and small highlights, short legs, thick rounded body and tight curl tail. Preserve EXACT head/body proportions and face design. Professional cleanup, consistent volumes, no flat icon/vector substitute.
+Genuinely transparent alpha background, no text, no grid, no shadows, no scenery, no symbols or extra props. Every figure fully contained, separated, a complete single silhouette. Same physical scale, camera height, lighting and palette in every cell. Do not normalize each pose to fill its cell.
+ONE landscape sprite sheet 4 columns by 3 rows. TWELVE drawings with the same standing body and planted paws of original top-left A throughout. Face remains three-quarter facing left, eyes engage the viewer. Keep body, paw contacts, head size, coat, muzzle and ears consistent; only the following subtle acted changes:
+1 original standing neutral A.
+2 same neutral, half blink.
+3 same neutral, eyes fully gently closed.
+4 accepts petting: soft closed eyes, head leans slightly UP and toward imaginary stroking hand (NO drawn hand).
+5 blissful petting, small closed-eye smile, head tilted a little farther, one ear follows.
+6 eases back from petting, head near neutral, eyelids opening.
+7 listening: head tilted 8 degrees one way, attentive eyes, closed mouth.
+8 listening: head tilted 8 degrees the other way, attentive eyes, closed mouth.
+9 gently declines another treat: head turns a little away, mouth closed, skeptical half lids.
+10 looking back from refusal toward user.
+11 anticipatory tail wag: same neutral body, curl-tail rotated gently one way.
+12 same neutral body, curl-tail rotated gently the other way.
+The head tilt is redrawn convincingly with ears settling and facial volumes staying intact, not just a sticker rotated on an unmoving neck.

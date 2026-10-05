@@ -1,0 +1,15 @@
+Use case: identity-preserve. Finished hand-drawn animation sprite sheet for Kurt. Match the exact approved fawn pug from reference image 1 and the consistent poses in reference image 2. Preserve big expressive gentle brown eyes, eyebrows, brown mask and ears, short limbs, barrel body, curled tail, warm fawn gradients and soft brown ink line. No change of character, breed, palette, face or head size. Same physical scale and ground baseline throughout. 4 columns by 3 rows, 12 separate complete figures on GENUINELY transparent alpha, no text/grid/background/shadow or halo. Left-facing three-quarter like original A. Do not scale individual poses to fit their cells. No props except explicitly requested tiny treat.
+These twelve drawings are ONE eating performance of the SEATED pug from image1 top-right and image2 seated pose. SAME seated haunch and planted forepaws throughout. No standing or lying.
+1 seated neutral.
+2 eyes glance down at tiny biscuit placed just in front of forepaws, curl tail lifts.
+3 head starts bowing.
+4 muzzle halfway toward biscuit, haunch and paws stay fixed.
+5 muzzle reaches biscuit ON THE SUPPORT PLANE, neck bends naturally, haunch remains sitting.
+6 picks up biscuit in mouth, biscuit disappears.
+7 small chew, head low, soft eyelids.
+8 second chew, small cheek change.
+9 head rises halfway, swallowing.
+10 upright again, content eyes and tiny tongue licking lip.
+11 upright seated neutral with curled tail tilted a little one way.
+12 upright seated neutral with curled tail tilted other way.
+The first and last pose match the approved seated model. Only the head/neck/expression/tail perform the action. Do not shrink the dog while bowing.

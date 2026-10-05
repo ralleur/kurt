@@ -1,0 +1,68 @@
+{
+  "hauser": {
+    "path": "hauser-app-swift",
+    "format": "ios",
+    "assets": "KurtLabAssets",
+    "runtime": {
+      "runtime/ios/KurtLife.swift": "Hauser/KurtLab/KurtLife.swift",
+      "runtime/ios/KurtMotion.swift": "Hauser/KurtLab/KurtMotion.swift",
+      "runtime/ios/KurtRoomTravel.swift": "Hauser/KurtLab/KurtRoomTravel.swift",
+      "runtime/ios/KurtRoomMap.swift": "Hauser/KurtLab/KurtRoomMap.swift",
+      "runtime/ios/KurtSpriteView.swift": "Hauser/KurtLab/KurtSpriteView.swift"
+    }
+  },
+  "mutti": {
+    "path": "mutti",
+    "format": "mutti",
+    "cell": 256,
+    "columns": 8,
+    "assets": "mutti/migrate/web/kurt",
+    "runtime": {
+      "runtime/mutti/kurt.js": "mutti/migrate/web/kurt.js"
+    },
+    "clips": [
+      "idle-sleep",
+      "wake-seat",
+      "rise-seat",
+      "scoot-floor",
+      "walk-floor",
+      "run-floor",
+      "eat-floor",
+      "vomit-floor",
+      "poop-floor",
+      "turn-floor"
+    ]
+  },
+  "website": {
+    "path": "ralleur-website/site",
+    "format": "website",
+    "cell": 128,
+    "columns": 16,
+    "assets": "dist/assets/kurt",
+    "runtime": {
+      "runtime/web/kurt-motion.mjs": "dist/kurt-motion.mjs",
+      "runtime/web/kurt-behavior.mjs": "dist/kurt-behavior.mjs"
+    },
+    "clips": [
+      "idle-floor",
+      "stand-floor",
+      "walk-floor",
+      "run-floor",
+      "scoot-floor",
+      "jump-seat",
+      "turn-floor",
+      "sit-seat",
+      "rise-seat",
+      "yawn-seat",
+      "eat-floor",
+      "vomit-floor",
+      "poop-floor",
+      "lie-seat",
+      "idle-lie",
+      "wake-seat",
+      "carry-lift",
+      "carry-hang",
+      "carry-release"
+    ]
+  }
+}

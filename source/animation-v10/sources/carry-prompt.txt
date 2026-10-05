@@ -1,0 +1,16 @@
+Use case: illustration-story.
+Asset type: production 2D hand-drawn animation sprite sheet for the existing iOS character Kurt. This is a new pose sheet, not a redesign.
+Reference image 1 is the exact approved standing model: keep Kurt's identity, compact fawn body mass, head size, dark floppy ears and muzzle, large brown eyes, tiny curled tail, warm brown ink outline, soft cel shading. Reference 2 is an airborne pose showing the same character volume; do not copy its tucked jumping legs.
+Create ONE transparent PNG sheet, 4 columns by 2 rows, eight complete isolated cels, equal cells, same character scale and consistent orientation looking to the LEFT in three-quarter view as the references. Plenty of transparent padding between cels, no labels, no borders, no checkerboard, no ground, no cast shadows, no hands, no finger, no collar, no straps.
+Action: a playful fictional cartoon pug picked up by the loose scruff at the back of his neck. The invisible cursor grip is a small gently raised fold just behind the ears. His plump torso hangs diagonally DOWN from that nape pivot, all four little paws dangling relaxed under gravity. He is calm, mildly puzzled and endearing, healthy and unharmed, no distress. Keep the head and body volumes constant; no stretched neck, skinny elongated body, sad eyes, jumping pose, or sitting pose.
+The nape grip is at the identical local point in every cel. Head remains almost steady; the dangling paws and hindquarters move only subtly.
+Cels left-to-right then next row:
+1. pickup anticipation: same standing proportions, shoulders slightly rising, paws just unweighting;
+2. transition into hanging: front feet dangling, hindfeet lifting, body tilted about 20 degrees nose-up from neutral;
+3. main hanging pose: compact plump body tilted about 30 degrees nose-up, four feet loosely down, open calm eyes;
+4. same hanging pose, paws drifting gently a few pixels toward the face;
+5. same hanging pose, paws drifting gently a few pixels toward the tail;
+6. same as cel 3 with a soft closed-eye blink;
+7. lowering: body returns toward horizontal, forepaws reaching gently down, hindpaws still loose;
+8. landing squash: four paws softly contact an invisible ground, near the exact standing reference, tiny bend in elbows, same mass.
+The six hanging/transition cels are animation keys, not independent character variants. Traditional affectionate frame-by-frame cartoon craftsmanship, crisp readable silhouettes at small scale. Preserve truly transparent alpha. Output a high-resolution landscape sheet, ideally 2048 by 1024.

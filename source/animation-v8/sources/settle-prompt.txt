@@ -1,0 +1,19 @@
+Use case: identity-preserve.
+Asset: finished 2D hand-drawn animation cels for Kurt, the EXACT warm fawn pug in the attached approved casting A. The reference is binding model artwork, not loose inspiration.
+Create ONE production sprite sheet: 4 columns by 3 rows, twelve fully separated complete figures, landscape 2048 x 1536, genuinely transparent alpha background. No text, no grid lines, no shadow or glow, no scene or props.
+ALL twelve drawings depict the SAME left-facing three-quarter view, same camera, identical head size, muzzle, tiny eyebrows, brown ears and eye highlights, short legs, barrel belly, curled tail, warm subtly shaded fur and soft brown contour as the reference TOP LEFT. Keep reference TOP RIGHT seated shape and BOTTOM LEFT sleeping shape. Do not redesign or simplify into flat vector art. This is a sequential animated lowering action, not twelve unrelated poses.
+Fixed scale in every cell (standing dog approx 425 units wide and 335 high, same head approx 250 high). Each cell has the same fixed virtual ground baseline and the same forepaw anchor; NEVER rescale the dog to fill the cell as he lies down. The back/tail moves naturally, the forepaws stay grounded and move only when reaching forward.
+Reading left to right then top to bottom:
+1 exact reference top-left standing pose.
+2 same face and standing dog, knees gently bending, rump lowering a little.
+3 rump halfway toward sitting, forelegs straight planted, body weight back.
+4 nearly seated, haunch reaching ground, head remains same size.
+5 exact seated pose like top-right reference, looking gently toward viewer.
+6 seated, leans chest forward a little and begins to reach front paws.
+7 forepaws extend forward, elbows bend, chest halfway lowered, rear remains resting.
+8 chest almost on front paws, head lowering, haunch curled beside torso.
+9 lying with head held just above front paws, eyes softly open.
+10 same lying pose, lowers muzzle onto paws, eyes half closed.
+11 exact cozy sleeping pose like bottom-left reference, closed eyes and muzzle resting on paws.
+12 same sleeping pose with an extremely subtle breath, no new design.
+Every cell must be a single closed complete clean silhouette, no disconnected body pieces. Consistent face, head size, foot count, fur palette and line weight. Strong professional animation cleanup and stable volumes. Favor fidelity to the supplied actual character over flourishes. No speech symbols, Zzz, motion lines, collar or accessories.

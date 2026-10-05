@@ -1,0 +1,12 @@
+Use case: identity-preserve. Create a production animation sheet, 4 columns by 2 rows, eight complete drawings. Transparent alpha background, no backdrop, no shadow, no text, no lines/symbols.
+Subject is EXACTLY Kurt the warm fawn pug in attached original approved A, same face, mask, tiny eyebrows, brown ears, gentle eyes, short limbs, barrel belly, curl tail, soft brown hand-drawn line with gently shaded fur. Reference2 shows our accepted matching cleanup. Stable camera, character size, palette, line thickness and physical mass. No redesign or growing/shrinking body.
+These eight cels show one SHORT, WEIGHTY TROTTING cycle facing left in the original three-quarter view. Same torso/head structure in every cel, no blinking. The short legs are the actual action. Two DIAGONAL leg pairs alternate: near foreleg with far hindleg, then far foreleg with near hindleg.
+1 near forepaw forward contacts ground, diagonally opposed hind supports behind.
+2 same diagonal pair bears weight, body moves over support, knees yield a little.
+3 those feet push back; opposite diagonal feet swing forward visibly lifted.
+4 brief small flight, belly slightly raised, paws gathered, no long flying superhero legs.
+5 opposite diagonal pair lands: far forepaw forward, near hind behind, near forepaw lifted.
+6 those paws bear weight, body passes over them.
+7 those feet push back, first pair swing forward.
+8 brief small gathered flight returning to cel1.
+Fixed ground baseline. Same head and eyes, subtle body bob only, no stretching dog into dachshund, no extra paws. The cycle must close naturally into drawing1. All drawings have a consistent torso center.

@@ -1,0 +1,12 @@
+Use case: identity-preserve. Production cel animation of Kurt, exactly approved fawn pug in reference1, same rendering as reference2. Warm soft brown contour, fawn fur shading, brown mask/ears, gentle brown eyes, barrel body, tiny short legs, curled tail. 4 columns x2 rows, eight successive complete cels, genuinely transparent background, no text, no symbols, no ground shadow.
+Action: a dog comically SCOOTING HIS BOTTOM ON THE FLOOR using his FRONT PAWS TO PULL HIMSELF FORWARD. Must read as a real dog butt-scoot, not a teddy bear waving both arms in the air. LEFT-facing three-quarter/profile like original A. Rump is always firmly at floor level. Hind legs are relaxed forward/splayed so the rounded rump visibly rubs along the floor. Torso leans forward sufficiently that both front paws can reach and bear weight on the floor AHEAD of his rump. Show the forelegs angled down to floor, not horizontal airborne arms.
+Same head size, same body weight, same scale and fixed ground baseline throughout. Eight poses:
+1 seated low on rump leaning forward, both front paws on floor in front.
+2 near forepaw reaches slightly forward, far forepaw supports on floor.
+3 both forepaws planted farther ahead, torso stretched modestly forward.
+4 elbows bend and pull the rump toward the planted paws, rump never lifts.
+5 near forepaw planted, far forepaw lifts/reaches forward.
+6 both paws planted in front again, torso stretches forward a little.
+7 forelegs pull rump toward paws again.
+8 returns to posture1 ready to repeat, both forepaws on floor.
+A small, believable comical action. Maintain original eye/muzzle design, no human hands, no extra limbs, no generic dachshund. No waste, no trails. Stable center/scale; forward movement will be added in animation code.

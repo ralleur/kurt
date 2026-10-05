@@ -1,0 +1,8 @@
+node_modules/
+.build/
+__pycache__/
+.DS_Store
+source/*/ios-assets/
+source/*/reviews/
+source/*/atlas-inline.js
+source/animation-v10/cels/

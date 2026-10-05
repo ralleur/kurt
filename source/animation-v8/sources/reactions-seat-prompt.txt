@@ -1,0 +1,17 @@
+Use case: identity-preserve. Production 2D animation cels for Kurt, exactly the fawn pug in reference image 1 (approved original A). Image 2 is the newly drawn lowering sequence: match its cleanup and drawing identity too, but image 1 is authoritative for likeness.
+Warm classic hand-drawn children's animation look: soft rounded dark brown contour, fawn fur with gentle warm shadow, chocolate mask/ears, large gentle dark eyes and small highlights, short legs, thick rounded body and tight curl tail. Preserve EXACT head/body proportions and face design. Professional cleanup, consistent volumes, no flat icon/vector substitute.
+Genuinely transparent alpha background, no text, no grid, no shadows, no scenery, no symbols or extra props. Every figure fully contained, separated, a complete single silhouette. Same physical scale, camera height, lighting and palette in every cell. Do not normalize each pose to fill its cell.
+ONE landscape sprite sheet 4 columns by 3 rows. TWELVE drawings using EXACT seated body from image1 top right (also image2 row2 first) throughout. Same haunch contact, front paw anchors, head size, soft fur and three-quarter left view.
+1 seated neutral.
+2 seated listening head tilt left, eyes engaging viewer.
+3 seated listening head tilt right.
+4 petting: soft eyes half closed, head leans upward just a little.
+5 enjoying petting, closed content eyes and relaxed cheeks.
+6 enjoying petting, closed content eyes and slight head tilt other way.
+7 prepares to yawn: eyelids lower, mouth begins to open.
+8 full warm sleepy yawn: eyes softly squeezed closed, pug mouth opens naturally vertically, small pink tongue, no aggressive teeth.
+9 yawn recovers, mouth half closed, eyelids sleepy.
+10 back to neutral seated, soft small smile.
+11 politely refuses another treat, head turned slightly away, half lids, mouth closed.
+12 seated blink, eyes gently closed.
+Keep this exact character and stable scale, with real expression drawings. No Zzz, hearts, sweat marks, food, hands, collar or decorations.
