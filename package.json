@@ -1,6 +1,6 @@
 {
   "name": "@ralleur/kurt",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Kurt: shared drawings, animation runtimes and versioned project exports",
@@ -8,7 +8,8 @@
   "scripts": {
     "artwork": "node tools/build-artwork.mjs",
     "export": "python3 tools/export.py",
-    "test": "python3 tools/export.py && node --test tests/*.test.* && python3 -m unittest discover -s tests -p \"test_*.py\""
+    "test": "python3 tools/export.py && node --test tests/*.test.* && python3 -m unittest discover -s tests -p \"test_*.py\"",
+    "package:web": "python3 tools/package-web.py"
   },
   "devDependencies": {
     "sharp": "0.35.4"

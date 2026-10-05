@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Repack the approved artwork for each consumer; never redraw a frame."""
 import argparse
 import hashlib
@@ -113,7 +114,7 @@ def export(profile):
     provenance = {'repository': 'https://github.com/ralleur/kurt', 'artworkVersion': atlas['version'], 'profile': profile,
                   'changes': f'Original frames, {cell}px lossless WebP, identical-pixel deduplication. No redrawing.', 'uniqueCels': len(cels), 'inputs': inputs}
     (destination / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
-    (destination / 'README.txt').write_text('Kurt — Ralleur\n\nGenerated from https://github.com/ralleur/kurt; see kurt.lock.json in the consumer root.\nDo not edit these generated assets. Artwork remains owner-provided; no new public license is granted.\nSource hashes and transformations: provenance.json.\n')
+    (destination / 'README.txt').write_text('Kurt — Ralleur\n\nGenerated from https://github.com/ralleur/kurt; see kurt.lock.json in the consumer root.\nDo not edit these generated assets. Artwork: Kurt by Ralleur, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Credit the source and indicate changes.\nSource hashes and transformations: provenance.json.\n')
     (destination.parent / 'inputs.json').write_text(json.dumps(source_stamp(profile), sort_keys=True))
     print(f'{profile}: {atlas["version"]}, {len(sequences)} clips, {len(cels)} cels, {len(filenames)} pages')
     return destination

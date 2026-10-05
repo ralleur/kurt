@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-only
 """Install or check a pinned Kurt snapshot without overwriting local edits."""
 import argparse
 import hashlib
@@ -33,9 +34,11 @@ def desired(profile):
     files = {f'{config["assets"]}/{p.name}': p for p in exported.iterdir() if p.is_file()}
     files.update({target: ROOT / source for source, target in config['runtime'].items()})
     files.update({f'{config["assets"]}/KURT-LICENSE.md': ROOT / 'LICENSE.md'})
-    license_name = 'AGPL-3.0-only.txt' if profile == 'hauser' else 'GPL-2.0-or-later.txt' if profile == 'mutti' else None
+    license_name = 'GPL-2.0-or-later.txt' if profile == 'mutti' else 'AGPL-3.0-only.txt'
     if license_name:
         files[f'{config["assets"]}/{license_name}'] = ROOT / 'licenses' / license_name
+    files[f'{config["assets"]}/CC-BY-4.0.txt'] = ROOT / 'licenses/CC-BY-4.0.txt'
+    files[f'{config["assets"]}/ATTRIBUTION.md'] = ROOT / 'ATTRIBUTION.md'
     return files
 
 

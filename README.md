@@ -1,98 +1,59 @@
 # Kurt
 
-Kurt ist der Mops von Ralleur. Hier liegen seine verbindlichen Zeichnungen,
-Animationen und wiederverwendbaren Web- und iOS-Kerne. Hauser, der Mutti-
-Installer und die Ralleur-Website beziehen ihren Kurt aus diesem Repository.
+A lovingly drawn pug for your website. Kurt wanders, watches, sits down and
+takes his time — a little company, inspired by eSheep and Tamagotchi.
 
-Ausgangsstand **0.1.0**: die freigegebene Fassung **kurt-a-refined-12** mit
-27 Atlas-Seiten, 2.324 Frames einschließlich Haltebildern und Wiederholungen.
-Die ursprünglichen Zeichnungen bleiben unverändert.
+![Kurt, the approved neutral drawing](references/neutral-master.png)
 
-## Was hier gepflegt wird
+**[Download the website package](https://github.com/ralleur/kurt/releases/latest)**
+and copy its `kurt/` folder to your website. Then add:
 
-- `references/`: Casting A, die freigegebene Idle-Referenz und der neutrale Master.
-- `source/`: registrierte Zeichnungen und die tatsächlich benötigte Baukette
-  v8 → v9 → v10 → v12. Die Nummern dokumentieren Zeichnungsschritte, keine
-  getrennten Produktimplementierungen. Alte Studien und Videos bleiben im
-  historischen Hauser-Labor; sie sind keine aktive Quelle mehr.
-- `assets/`: vollständiger kanonischer Atlas, Ereignisse und Effektzeichnungen.
-- `runtime/ios/`: Geometrie, Bewegungen, Raumwege, Verdauung/Persistenz sowie
-  UIKit-Renderer und Gesten. Ohne Abhängigkeit von Hauser-Modellen oder Farben.
-- `runtime/web/`: Bewegung, Fütterung, Tragen und aktive Verdauungszeit.
-- `runtime/mutti/`: der dekorative Fortschritts-Player des Installers. Seine
-  Schrittsteuerung bleibt absichtlich anders als die autonome Website.
-- `profiles.json`: benötigte Clips, Auflösung und Zielpfade der drei Verbraucher.
-- `tools/export.py`: ein gemeinsamer Atlas-Exporter, verlustfreie WebP-Dateien,
-  identische-Zellen-Deduplizierung und Herkunftsprüfsummen.
+```html
+<script type="module" src="/kurt/kurt-element.mjs"></script>
+<kurt-companion></kurt-companion>
+```
 
-Hausers Raum-/Home-Assistant-Anbindung, Debugger und Objekterkennung bleiben
-in Hauser. Website-DOM, Oberflächen, Beschriftungen und Installer-Fortschritt
-bleiben ebenfalls beim jeweiligen Produkt. Ein Swift-Kern und ein Web-Kern
-sind nötig; deren Unterschiede werden hier gepflegt, nicht in unabhängigen
-Projektkopien. Die bestehenden spezifischen Manifestformate bleiben erhalten.
+That's it. No framework, API key, account, CDN, tracking or build step.
+The download includes an `index.html` example. Serve it over HTTP to try it;
+ES modules and asset loading do not work reliably with a `file://` URL.
 
-## Einrichten und prüfen
+The responsive component keeps Kurt inside its own area and provides pause,
+reduced-motion support and automatic suspension while hidden. Artwork credit
+is included. This simple embed is decorative; the lower-level behavior module
+also exposes feeding and carrying for custom integrations.
 
-Node.js und Python 3.10+:
+**Web code: AGPL-3.0-only. Artwork: CC BY 4.0.** You can use Kurt on personal and
+commercial sites. Keep the software notice and credit the artwork; indicate
+artwork changes. See [licenses](LICENSE.md) and [attribution](ATTRIBUTION.md).
+
+## Customize or contribute
+
+- [Website setup and API](docs/website.md)
+- [Build the artwork and update consumers](docs/development.md)
+- `runtime/web/`: shared motion, behavior and the drop-in Web component.
+- `runtime/ios/`: native motion, room geometry, digestion and renderer.
+- `source/`: registered drawings and the reproducible animation build.
+- `assets/`: the approved `kurt-a-refined-12` atlas: 27 pages and 2,324 frames
+  including held and repeated drawings.
+- `references/`: approved casting A and neutral body reference.
+
+Kurt originated in Hauser and also appears in the Mutti installer and on the
+Ralleur website. This is their shared source of truth. Existing iOS and
+Mutti components retain their original AGPL/GPL licenses; they are not part
+of the website download.
+
+To build the website package yourself (Python 3.10+):
 
 ```sh
-npm ci
 python3 -m pip install -r requirements.txt
-npm test
+python3 tools/package-web.py
+python3 -m http.server 8080 --directory .build/web
 ```
 
-Nur bei Zeichnungsänderungen: `npm run artwork` baut den gesamten Atlas aus
-den enthaltenen Quellen neu, einschließlich der Prüfung unbeweglicher Lider.
-Er erzeugt außerdem Vergleichsbilder unter `source/animation-v12/reviews/`.
-Anschließend die veränderten Animationen mit der Referenz vergleichen und
-`npm test` ausführen. `npm run export` erzeugt nur die Verbraucherpakete.
+Open `http://localhost:8080`. The ZIP is written to `.build/`.
+`npm test` runs the export, behavior and synchronization checks. Node and
+`npm ci` are needed when rebuilding the artwork with `npm run artwork`.
 
-## Ein Update für alle Projekte
-
-Die Verbraucher enthalten installierte Snapshots, damit sie offline bauen und
-ohne GitHub-Zugang laufen. Das sind **generierte Abhängigkeiten**, keine Orte
-zum Weiterentwickeln. `kurt.lock.json` hält Version, Git-Commit und den SHA-256
-jeder verwalteten Datei fest. Ein Update wird niemals im laufenden Produkt
-nachgeladen. Es kommt mit dessen nächstem regulären Build.
-
-Nach einer Änderung: prüfen, Paketversion in `package.json`/Lockfile anheben,
-Kurt committen und taggen, dann synchronisieren:
-
-```sh
-npm run export
-python3 tools/sync.py --all --workspace /path/to/workspace
-python3 tools/sync.py --all --workspace /path/to/workspace --check
-```
-
-Oder nur ein Projekt:
-
-```sh
-python3 tools/sync.py --consumer hauser --root /path/to/hauser-app-swift
-python3 tools/sync.py --consumer mutti --root /path/to/mutti
-python3 tools/sync.py --consumer website --root /path/to/ralleur-website/site
-```
-
-Bei allen Projekten werden zuerst sämtliche Konflikte geprüft, erst danach
-wird geschrieben. Manuelle Änderungen an installierten Kurt-Dateien oder
-veraltete Exporte stoppen den Vorgang. Beim ersten Import der bekannten
-Altstände wird zusätzlich `--adopt` verwendet; auch dort müssen die alten
-Prüfsummen exakt stimmen. Es gibt keinen stillen Force-Overwrite.
-
-Ein früherer Stand lässt sich durch Checkout seines Kurt-Tags, erneuten
-Export und denselben Sync installieren. Keine Git-Submodule, kein CDN,
-kein zusätzlicher Dienst und kein Zugriff auf echte Haushalte nötig.
-
-## Verbraucher
-
-| Profil | Gemeinsamer Stand | Produktseitige Anbindung |
-| --- | --- | --- |
-| `hauser` | vollständiger Atlas, fünf Swift-Dateien | Hauser iOS, Raum- und Sitzflächen, versteckte Aktivierung |
-| `mutti` | zehn Clips mit Originalauflösung, Installer-Player | lokaler Importfortschritt, Mac und Docker nutzen dieselbe Weboberfläche |
-| `website` | neunzehn Clips mit 128px-Zellen, zwei Web-Module | Ralleur-Webseite, DOM-Flächen und Zeigerbedienung |
-
-Andere Projekte können ein Profil ergänzen und dieselben Quellen beziehen.
-Hausers Web-App erhält durch diese Extraktion keine Kurt-Funktion.
-
-Dieses Repository startet privat. Bestehende Softwarelizenzen bleiben
-unverändert; eine öffentliche Lizenz für Kurt wird dadurch nicht erteilt.
-Siehe [LICENSE.md](LICENSE.md).
+Contributions should preserve Kurt's approved proportions, grounded paws,
+independent pupil movement and deliberate hand-drawn timing. Existing files
+retain their license; use the same license for contributions to those files.

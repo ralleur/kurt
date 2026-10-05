@@ -19,3 +19,8 @@ also requires checking the changed animation visually against `references/`.
 Consumers use a pinned, hash-checked snapshot in `kurt.lock.json`. Commit a
 validated Kurt revision before syncing. The sync refuses local modifications;
 bring those changes back into this repository, never bypass the guard.
+
+Public license boundary: source code, tests, tooling and documentation use
+AGPL-3.0-only. Kurt artwork and animation data use CC BY 4.0. Preserve the
+existing GPL-2.0-or-later notices on the Mutti adapter. Do not introduce MIT
+or other license changes without an explicit owner instruction.

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kurt — a little company for your website</title>
+  <style>
+    :root { color-scheme:light dark; font:18px/1.6 system-ui,sans-serif; }
+    body { max-width:760px; margin:10vh auto; padding:24px; }
+    h1 { font-size:clamp(32px,7vw,64px); line-height:1.1; letter-spacing:-.04em; }
+    kurt-companion { margin:48px 0; }
+    pre { padding:20px; border:1px solid; border-radius:12px; overflow:auto; font-size:14px; }
+    a { color:inherit; }
+  </style>
+  <script type="module" src="./kurt/kurt-element.mjs"></script>
+</head>
+<body>
+  <h1>A little company.<br>Meet Kurt.</h1>
+  <p>A hand-drawn pug for your website. He wanders, watches and takes his time.</p>
+  <kurt-companion></kurt-companion>
+  <p>Copy the <code>kurt/</code> folder to your website and add:</p>
+  <pre>&lt;script type="module" src="/kurt/kurt-element.mjs"&gt;&lt;/script&gt;
+&lt;kurt-companion&gt;&lt;/kurt-companion&gt;</pre>
+  <p>This decorative embed supports pause, smaller screens and reduced motion.
+    It stops when the tab or element is hidden. No tracking, cookies or external runtime services.</p>
+  <p>Web code: AGPL-3.0-only. Artwork: CC BY 4.0. Credit is included below Kurt.
+    <a href="https://github.com/ralleur/kurt">Source and customization</a>.</p>
+</body>
+</html>

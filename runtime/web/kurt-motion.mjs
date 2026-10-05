@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 // Playback uses the original cel timing and travel curves from the Kurt atlas.
 const routine = [
   ['idle-floor', 24], ['walk-floor'], ['run-floor'], ['jump-seat'],

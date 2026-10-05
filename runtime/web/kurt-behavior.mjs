@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: AGPL-3.0-only
 import { KurtMotion } from './kurt-motion.mjs';
 
 // Only visible, unpaused foreground time is passed to this clock.
