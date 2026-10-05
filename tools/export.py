@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 import shutil
+import subprocess
 from pathlib import Path
 from PIL import Image
 
@@ -18,15 +19,35 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def large_source_stamp():
+    paths = subprocess.check_output(['git', '-C', str(ROOT), 'ls-files', '--cached', '--others', '--exclude-standard', 'source', 'tools/build-artwork.mjs'], text=True).splitlines()
+    return {name: digest(ROOT / name) for name in sorted(set(paths)) if (ROOT / name).is_file()}
+
+
+def large_source():
+    directory = ROOT / '.build/artwork-512'
+    stamp = directory / 'inputs.json'
+    current = large_source_stamp()
+    if not stamp.exists() or json.loads(stamp.read_text()) != current:
+        subprocess.run(['node', str(ROOT / 'tools/build-artwork.mjs'), '--large'], cwd=ROOT, check=True)
+        stamp.write_text(json.dumps(large_source_stamp(), sort_keys=True))
+    return directory / 'animation-v12'
+
+
 def source_stamp(profile):
     return {'profile': PROFILES[profile], 'inputs': {p.name: digest(p) for p in sorted((ROOT / 'assets').iterdir()) if p.is_file()},
-            'exporter': digest(Path(__file__))}
+            'exporter': digest(Path(__file__)), **({'largeInputs': large_source_stamp()} if profile == 'website' else {})}
 
 
-def export(profile):
-    config = PROFILES[profile]
-    source = ROOT / 'assets'
+def export(profile, large=False):
+    config = dict(PROFILES[profile])
+    if large:
+        config.update(cell=512, columns=4)
+        config['clips'] = [name for name in config['clips'] if name not in ['eat-floor', 'vomit-floor', 'poop-floor', 'lie-seat', 'idle-lie', 'wake-seat']]
+    source = large_source() if large else ROOT / 'assets'
     destination = ROOT / '.build/exports' / profile / 'assets'
+    if large:
+        destination = destination / 'large'
     # This directory contains only this export, never consumer files.
     shutil.rmtree(destination, ignore_errors=True)
     destination.mkdir(parents=True)
@@ -104,7 +125,7 @@ def export(profile):
     else:
         manifest = dict(common, sourceVersion=atlas['version'], cellsPerPage=per_page, sourceSize=atlas['sourceSize'], bodyWidth=atlas['bodyWidth'], sequences=sequences)
         cels[sequences['walk-floor']['frames'][0]['cell']].save(destination / 'still.webp', lossless=True)
-    for name in EFFECTS:
+    for name in ([] if large else EFFECTS):
         inputs[name + '.png'] = digest(source / (name + '.png'))
         if config['format'] == 'mutti':
             shutil.copyfile(source / (name + '.png'), destination / (name + '.png'))
@@ -115,7 +136,10 @@ def export(profile):
                   'changes': f'Original frames, {cell}px lossless WebP, identical-pixel deduplication. No redrawing.', 'uniqueCels': len(cels), 'inputs': inputs}
     (destination / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
     (destination / 'README.txt').write_text('Kurt — Ralleur\n\nGenerated from https://github.com/ralleur/kurt; see kurt.lock.json in the consumer root.\nDo not edit these generated assets. Artwork: Kurt by Ralleur, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Credit the source and indicate changes.\nSource hashes and transformations: provenance.json.\n')
-    (destination.parent / 'inputs.json').write_text(json.dumps(source_stamp(profile), sort_keys=True))
+    if not large:
+        if profile == 'website':
+            export(profile, large=True)
+        (destination.parent / 'inputs.json').write_text(json.dumps(source_stamp(profile), sort_keys=True))
     print(f'{profile}: {atlas["version"]}, {len(sequences)} clips, {len(cels)} cels, {len(filenames)} pages')
     return destination
 

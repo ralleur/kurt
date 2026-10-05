@@ -31,7 +31,7 @@ def desired(profile):
         raise ValueError('Run npm run export first.')
     if json.loads((exported.parent / 'inputs.json').read_text()) != source_stamp(profile):
         raise ValueError(f'{profile}: stale export. Run npm run export first.')
-    files = {f'{config["assets"]}/{p.name}': p for p in exported.iterdir() if p.is_file()}
+    files = {f'{config["assets"]}/{p.relative_to(exported).as_posix()}': p for p in exported.rglob('*') if p.is_file()}
     files.update({target: ROOT / source for source, target in config['runtime'].items()})
     files.update({f'{config["assets"]}/KURT-LICENSE.md': ROOT / 'LICENSE.md'})
     license_name = 'GPL-2.0-or-later.txt' if profile == 'mutti' else 'AGPL-3.0-only.txt'

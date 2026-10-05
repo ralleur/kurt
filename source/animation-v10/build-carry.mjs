@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Register the generated drawings to the approved model's size and floor.
 import sharp from 'sharp';
+import {cell, atlasDirectory} from '../shared/build-profile.mjs';
 import {readFile,writeFile,copyFile,mkdir} from 'node:fs/promises';
-const dir=new URL('.',import.meta.url).pathname, previous=new URL('../animation-v9/ios-assets/',import.meta.url).pathname;
-const out=dir+'ios-assets/'; await mkdir(out,{recursive:true});await mkdir(dir+'cels',{recursive:true});await mkdir(dir+'reviews',{recursive:true});
+const dir=new URL('.',import.meta.url).pathname, previous=atlasDirectory('animation-v9');
+const out=atlasDirectory('animation-v10'); await mkdir(out,{recursive:true});await mkdir(dir+'cels',{recursive:true});await mkdir(dir+'reviews',{recursive:true});
 const atlas=JSON.parse(await readFile(previous+'manifest.json','utf8'));
 for(const file of [...atlas.pages,'room-map.json','poop.png','vomit.png','poop-drop.png','vomit-drop.png'])await copyFile(previous+file,out+file);
 const tips=[[205,81],[617,59],[1074,48],[1519,49],[195,483],[630,484],[1054,508],[1528,545]];
@@ -18,12 +19,12 @@ for(let i=0;i<8;i++){
  const cel=await sharp(data,{raw:info}).extract({left:x0,top:y0,width:x1-x0+1,height:y1-y0+1}).resize(w,h).png().toBuffer();
  const registered=await sharp({create:{width:512,height:512,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite([{input:cel,left:dx,top:dy}]).png().toBuffer();
  await writeFile(dir+`cels/carry-${i}.png`,registered);
- textures.push(await sharp(registered).resize(256).png().toBuffer());
+ textures.push(await sharp(registered).resize(cell).png().toBuffer());
  grips.push({x:(dx+(tips[i][0]-left-x0)*scale)/512,y:(dy+(tips[i][1]-top-y0)*scale)/512});
  cards.push({input:await sharp(registered).flop().resize(256).png().toBuffer(),left:i%4*256,top:Math.floor(i/4)*256});
 }
 const page=atlas.pages.length,file=`kurt-a-${page}.png`;atlas.pages.push(file);
-await sharp({create:{width:2048,height:2048,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(textures.map((input,i)=>({input,left:i*256,top:0}))).png().toFile(out+file);
+await sharp({create:{width:8*cell,height:8*cell,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(textures.map((input,i)=>({input,left:i*cell,top:0}))).png().toFile(out+file);
 const hold=(cel,count)=>Array(count).fill(cel);
 const definitions=[
  {id:'carry-lift',label:'Hochheben',cels:[0,0,1,1,2,2]},

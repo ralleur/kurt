@@ -3,9 +3,15 @@
 import {execFileSync} from 'node:child_process';
 import {readFile, copyFile} from 'node:fs/promises';
 const root = new URL('../', import.meta.url);
+const large = process.argv.includes('--large');
+if (large) process.env.KURT_LARGE_ARTWORK = '1';
 for (const script of ['animation-v8/build-walk.mjs', 'animation-v8/build.mjs', 'animation-v9/build-idle.mjs',
   'animation-v10/build-carry.mjs', 'animation-v12/build-idle.mjs']) {
   execFileSync(process.execPath, [new URL(`source/${script}`, root).pathname], {stdio: 'inherit'});
+}
+if (large) {
+  console.log('Full-resolution artwork built separately in .build/artwork-512/.');
+  process.exit(0);
 }
 const source = new URL('source/animation-v12/ios-assets/', root);
 const atlas = JSON.parse(await readFile(new URL('manifest.json', source)));

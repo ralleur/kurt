@@ -96,3 +96,16 @@ Hausers Web-App erhält durch diese Extraktion keine Kurt-Funktion.
 Öffentliche Freigabe ab Version 0.2.0: Code AGPL-3.0-only,
 Zeichnungen CC BY 4.0; vorhandene Mutti-Dateien behalten GPL-2.0-or-later.
 Siehe [LICENSE.md](../LICENSE.md).
+
+
+## Große Website-Darstellung
+
+`node tools/build-artwork.mjs --large` rendert die unveränderten 512px-Quellen
+in einen separaten Atlas unter `.build/artwork-512/`. Der kanonische 256px-Atlas
+für bestehende Verbraucher bleibt unverändert. `tools/export.py` baut diese
+Variante bei veränderten Quellprüfsummen automatisch neu. Das Website-Profil
+enthält zusätzlich `large/` mit 512px-Zellen und den dreizehn Bewegungs- und
+Trageclips des großen Exponats. Die 128px-Dateien bleiben bytegleich.
+Der rekursive Sync nimmt beide Größen in denselben geprüften Lock auf.
+Die Website lädt und dekodiert die großen Seiten bedarfsgerecht; der kleine
+Kurt verwendet weiterhin ausschließlich den kompakten Atlas.

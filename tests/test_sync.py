@@ -40,3 +40,15 @@ class SyncTests(unittest.TestCase):
             install(prepare('website', root, 'old-revision'))
             with self.assertRaisesRegex(ValueError, 'snapshot differs'):
                 prepare('website', root, 'new-revision', check=True)
+
+
+    def test_large_atlas_is_pinned_and_protected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(prepare('website', root, 'test-revision'))
+            lock = json.loads((root / 'kurt.lock.json').read_text())
+            name = 'dist/assets/kurt/large/kurt-0.webp'
+            self.assertIn(name, lock['files'])
+            (root / name).write_bytes(b'local artwork edit')
+            with self.assertRaisesRegex(ValueError, 'nothing overwritten'):
+                prepare('website', root, 'new-revision')

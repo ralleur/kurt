@@ -12,7 +12,8 @@ assets = export('website')
 output = ROOT / '.build/web'
 shutil.rmtree(output, ignore_errors=True)
 (output / 'kurt').mkdir(parents=True)
-shutil.copytree(assets, output / 'kurt/assets')
+# The simple small companion does not load the optional exhibition atlas.
+shutil.copytree(assets, output / 'kurt/assets', ignore=shutil.ignore_patterns('large'))
 for name in ['kurt-motion.mjs', 'kurt-behavior.mjs', 'kurt-element.mjs']:
     shutil.copyfile(ROOT / 'runtime/web' / name, output / 'kurt' / name)
 for name in ['AGPL-3.0-only.txt', 'CC-BY-4.0.txt']:

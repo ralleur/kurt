@@ -3,10 +3,11 @@
 // Clip an isolated iris texture behind a fixed, inset eye opening. Source
 // samples are limited to the iris core: no lid, fur or muzzle can travel.
 import sharp from 'sharp';
+import {cell, atlasDirectory} from '../shared/build-profile.mjs';
 import {readFile,writeFile,copyFile,mkdir} from 'node:fs/promises';
 const dir=new URL('.',import.meta.url).pathname,previous=new URL('../animation-v8/',import.meta.url).pathname;
-const out=dir+'ios-assets/'; await mkdir(out,{recursive:true});await mkdir(dir+'reviews',{recursive:true});
-const previousAtlas=new URL('../animation-v10/ios-assets/',import.meta.url).pathname;
+const out=atlasDirectory('animation-v12'); await mkdir(out,{recursive:true});await mkdir(dir+'reviews',{recursive:true});
+const previousAtlas=atlasDirectory('animation-v10');
 const atlas=JSON.parse(await readFile(previousAtlas+'manifest.json','utf8'));
 for(const file of [...atlas.pages,'room-map.json','poop.png','vomit.png','poop-drop.png','vomit-drop.png'])await copyFile(previousAtlas+file,out+file);
 const textures=[],cache=new Map(),originals=new Map(),variants=new Map();
@@ -101,22 +102,22 @@ function breathe(input,pose,amount,angle=0,gaze=[0,0]){
 async function texture(pose,expression,level,angle=0,gaze=[0,0]){
  const key=[pose,expression,level,angle,...gaze].join(':');if(cache.has(key))return cache.get(key);
  const source=await drawing(pose,expression),amount=level*(pose==='sleep'||pose==='lie'?5:3.5)/12;
- const resized=async data=>sharp(data,{raw:{width:512,height:512,channels:4}}).resize(256).raw().toBuffer();
+ const resized=async data=>sharp(data,{raw:{width:512,height:512,channels:4}}).resize(cell).raw().toBuffer();
  const data=await resized(breathe(source,pose,amount,angle,gaze));
  if(gaze.some(Boolean)){
   const fixed=await resized(breathe(source,pose,amount,angle));
   // Downsampling must not spread a moving iris into adjacent lid pixels.
   // Reapply the eye opening at the actual atlas resolution after filtering.
-  for(let y=0;y<256;y++)for(let x=0;x<256;x++){
-   const px=x*2+.5,py=y*2+.5,influence=(1-smooth((py-310)/90))*(1-smooth((px-315)/75));
+  for(let y=0;y<cell;y++)for(let x=0;x<cell;x++){
+   const px=(x+.5)*512/cell-.5,py=(y+.5)*512/cell-.5,influence=(1-smooth((py-310)/90))*(1-smooth((px-315)/75));
    const theta=-angle*Math.PI/180*influence,dx=px-218,dy=py-335;
    const sx=218+dx*Math.cos(theta)-dy*Math.sin(theta),sy=335+dx*Math.sin(theta)+dy*Math.cos(theta);
-   const mask=(eyesByPose[pose]??[]).reduce((v,eye)=>Math.max(v,1-smooth((openingRadius(sx,sy,eye)-.85)/.15)),0),i=(y*256+x)*4;
+   const mask=(eyesByPose[pose]??[]).reduce((v,eye)=>Math.max(v,1-smooth((openingRadius(sx,sy,eye)-.85)/.15)),0),i=(y*cell+x)*4;
    for(let c=0;c<4;c++)data[i+c]=Math.round(fixed[i+c]+(data[i+c]-fixed[i+c])*mask);
   }
  }
  const index=textures.length;
- textures.push(await sharp(data,{raw:{width:256,height:256,channels:4}}).png().toBuffer());cache.set(key,index);return index;
+ textures.push(await sharp(data,{raw:{width:cell,height:cell,channels:4}}).png().toBuffer());cache.set(key,index);return index;
 }
 const definitions=[
  {id:'idle-floor',pose:'stand',seconds:24,period:4,events:[[42,2,'reactions-floor/1'],[44,2,'reactions-floor/2'],[46,2,'reactions-floor/1'],[78,36,'look-left'],[145,2,'reactions-floor/1'],[147,2,'reactions-floor/2'],[149,2,'reactions-floor/1'],[174,36,'look-right'],[246,5,'food-floor/9']],gaze:[[0,3,5],[14,5,9],[48,-3,4],[83,3,5],[130,8,5],[178,5,9],[223,-2,6],[265,3,5]]},
@@ -143,7 +144,7 @@ for(const def of definitions){
 }
 for(let page=0;page<Math.ceil(textures.length/64);page++){
  const file=`kurt-a-${firstPage+page}.png`;atlas.pages.push(file);
- await sharp({create:{width:2048,height:2048,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(textures.slice(page*64,(page+1)*64).map((input,i)=>({input,left:i%8*256,top:Math.floor(i/8)*256}))).png().toFile(out+file);
+ await sharp({create:{width:8*cell,height:8*cell,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(textures.slice(page*64,(page+1)*64).map((input,i)=>({input,left:i%8*cell,top:Math.floor(i/8)*cell}))).png().toFile(out+file);
 }
 atlas.version='kurt-a-refined-12';
 await writeFile(out+'manifest.json',JSON.stringify(atlas,null,2)+'\n');
@@ -165,4 +166,4 @@ await sharp({create:{width:1280,height:768,channels:4,background:'#e4eef6'}}).co
 await writeFile(dir+'reviews/assets.json',JSON.stringify({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,uniqueIdleTextures:textures.length,loops:definitions,eyeMaskChecks:checks},null,2)+'\n');
 console.log({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,uniqueIdleTextures:textures.length});
 await import('./validate-lids.mjs');
-await import('./render-preview.mjs');
+if (cell === 256) await import('./render-preview.mjs');

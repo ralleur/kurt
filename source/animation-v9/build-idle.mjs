@@ -3,11 +3,12 @@
 // original head and grounded paws are immutable. Existing drawings supply
 // expressions, with the body kept from the owner's chosen neutral pose.
 import sharp from 'sharp';
+import {cell, atlasDirectory} from '../shared/build-profile.mjs';
 import {readFile,writeFile,copyFile,mkdir} from 'node:fs/promises';
 const dir=new URL('.',import.meta.url).pathname,previous=new URL('../animation-v8/',import.meta.url).pathname;
-const out=dir+'ios-assets/'; await mkdir(out,{recursive:true});await mkdir(dir+'reviews',{recursive:true});
-const atlas=JSON.parse(await readFile(previous+'ios-assets/manifest.json','utf8'));
-for(const file of [...atlas.pages,'room-map.json','poop.png','vomit.png','poop-drop.png','vomit-drop.png'])await copyFile(previous+'ios-assets/'+file,out+file);
+const out=atlasDirectory('animation-v9'); await mkdir(out,{recursive:true});await mkdir(dir+'reviews',{recursive:true});
+const atlas=JSON.parse(await readFile(atlasDirectory('animation-v8')+'manifest.json','utf8'));
+for(const file of [...atlas.pages,'room-map.json','poop.png','vomit.png','poop-drop.png','vomit-drop.png'])await copyFile(atlasDirectory('animation-v8')+file,out+file);
 const textures=[],cache=new Map(),originals=new Map(),variants=new Map();
 const smooth=t=>{t=Math.max(0,Math.min(1,t));return t*t*(3-2*t)};
 async function original(source){if(!originals.has(source))originals.set(source,await sharp(previous+'cels/'+source+'.png').ensureAlpha().raw().toBuffer());return originals.get(source)}
@@ -64,7 +65,7 @@ async function texture(pose,expression,level,angle=0){
  const key=[pose,expression,level,angle].join(':');if(cache.has(key))return cache.get(key);
  const data=breathe(await drawing(pose,expression),pose,level*(pose==='sleep'||pose==='lie'?5:3.5)/12,angle);
  const index=textures.length;
- textures.push(await sharp(data,{raw:{width:512,height:512,channels:4}}).resize(256).png().toBuffer());cache.set(key,index);return index;
+ textures.push(await sharp(data,{raw:{width:512,height:512,channels:4}}).resize(cell).png().toBuffer());cache.set(key,index);return index;
 }
 const definitions=[
  {id:'idle-floor',pose:'stand',label:'Ruhig stehen · atmen und schauen',seconds:24,period:4,events:[[42,2,'reactions-floor/1'],[44,2,'reactions-floor/2'],[46,2,'reactions-floor/1'],[78,36,'look-left'],[145,2,'reactions-floor/1'],[147,2,'reactions-floor/2'],[149,2,'reactions-floor/1'],[174,36,'look-right'],[246,5,'food-floor/9']]},
@@ -88,7 +89,7 @@ for(const def of definitions){
 }
 for(let page=0;page<Math.ceil(textures.length/64);page++){
  const file=`kurt-a-${firstPage+page}.png`;atlas.pages.push(file);
- await sharp({create:{width:2048,height:2048,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(textures.slice(page*64,(page+1)*64).map((input,i)=>({input,left:i%8*256,top:Math.floor(i/8)*256}))).png().toFile(out+file);
+ await sharp({create:{width:8*cell,height:8*cell,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite(textures.slice(page*64,(page+1)*64).map((input,i)=>({input,left:i%8*cell,top:Math.floor(i/8)*cell}))).png().toFile(out+file);
 }
 atlas.version='kurt-a-refined-09';
 await writeFile(out+'manifest.json',JSON.stringify(atlas,null,2)+'\n');

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import sharp from 'sharp';
+import {cell, atlasDirectory} from '../shared/build-profile.mjs';
 import {mkdir,readFile,writeFile,copyFile} from 'node:fs/promises';
 import {repertoire,study,FPS,GROUND,ANCHOR,BODY_WIDTH,VERSION} from './clips.mjs';
-const dir=new URL('.',import.meta.url).pathname,out=dir+'ios-assets/';
+const dir=new URL('.',import.meta.url).pathname,out=atlasDirectory('animation-v8');
 await mkdir(out,{recursive:true});await mkdir(dir+'cels/walk',{recursive:true});
 // Walking cels are rebuilt from the owner's exact idle in build-walk.mjs.
-const cell=256,columns=8,perPage=64,side=cell*columns;
+const columns=8,perPage=64,side=cell*columns;
 const frames=[],images=[],sequences=[],cache=new Map();
 async function imageFor(f){
  const key=JSON.stringify([f.source,!!f.flip,f.breath??0]);if(cache.has(key))return cache.get(key);
