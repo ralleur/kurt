@@ -43,7 +43,6 @@ def export(profile, large=False):
     config = dict(PROFILES[profile])
     if large:
         config.update(cell=512, columns=4)
-        config['clips'] = [name for name in config['clips'] if name not in ['eat-floor', 'vomit-floor', 'poop-floor', 'lie-seat', 'idle-lie', 'wake-seat']]
     source = large_source() if large else ROOT / 'assets'
     destination = ROOT / '.build/exports' / profile / 'assets'
     if large:

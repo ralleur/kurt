@@ -15,6 +15,7 @@ class LargeArtworkTests(unittest.TestCase):
         self.assertEqual(small['cell'], 128)
         self.assertEqual(large['fps'], small['fps'])
         self.assertEqual(large['anchor'], small['anchor'])
+        self.assertEqual(set(large['sequences']), set(small['sequences']))
         for name, clip in large['sequences'].items():
             original = small['sequences'][name]
             self.assertEqual(len(clip['frames']), len(original['frames']))
