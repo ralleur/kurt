@@ -8,6 +8,8 @@ Zeichnungsstand: die freigegebene Fassung **kurt-a-refined-12** mit
 27 Atlas-Seiten, 2.324 Frames einschließlich Haltebildern und Wiederholungen.
 Die ursprünglichen Zeichnungen bleiben unverändert.
 
+Offene Wünsche stehen im [Backlog](backlog.md).
+
 ## Was hier gepflegt wird
 
 - `references/`: Casting A, die freigegebene Idle-Referenz und der neutrale Master.
