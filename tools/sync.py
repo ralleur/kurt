@@ -34,7 +34,7 @@ def desired(profile):
     files = {f'{config["assets"]}/{p.relative_to(exported).as_posix()}': p for p in exported.rglob('*') if p.is_file()}
     files.update({target: ROOT / source for source, target in config['runtime'].items()})
     files.update({f'{config["assets"]}/KURT-LICENSE.md': ROOT / 'LICENSE.md'})
-    license_name = 'GPL-2.0-or-later.txt' if profile == 'mutti' else 'AGPL-3.0-only.txt'
+    license_name = None if config['format'] == 'landing-scenes' else ('GPL-2.0-or-later.txt' if profile == 'mutti' else 'AGPL-3.0-only.txt')
     if license_name:
         files[f'{config["assets"]}/{license_name}'] = ROOT / 'licenses' / license_name
     files[f'{config["assets"]}/CC-BY-4.0.txt'] = ROOT / 'licenses/CC-BY-4.0.txt'
@@ -48,8 +48,9 @@ def prepare(profile, consumer, commit, adopt=False, check=False):
     targets = desired(profile)
     hashes = {name: digest(path) for name, path in sorted(targets.items())}
     version = json.loads((ROOT / 'package.json').read_text())['version']
+    artwork_manifest = ROOT / '.build/exports' / profile / 'assets/manifest.json' if PROFILES[profile]['format'] == 'landing-scenes' else ROOT / 'assets/manifest.json'
     lock = {'repository': 'https://github.com/ralleur/kurt', 'version': version, 'revision': commit,
-            'profile': profile, 'artworkVersion': json.loads((ROOT / 'assets/manifest.json').read_text())['version'], 'files': hashes}
+            'profile': profile, 'artworkVersion': json.loads(artwork_manifest.read_text())['version'], 'files': hashes}
     lock_path = consumer / 'kurt.lock.json'
     if lock_path.exists():
         previous = json.loads(lock_path.read_text())

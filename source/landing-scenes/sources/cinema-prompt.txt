@@ -1,0 +1,54 @@
+Generation record — cinema
+Tool: built-in image_gen; transparent_background=true for every generation/edit.
+Character references: references/neutral-master.png (binding identity), source/animation-v8/cels/base/sit.png (seated proportions).
+Selected active sources: cinema-background.png (fixed props), cinema-layer.png (12 character keys, 4 columns x 3 rows, 1774x887).
+Intermediate scene master and full-scene sheet are not build inputs; only the two selected layers are retained in source control.
+Preparation: source/landing-scenes/build.py cuts cels in transparent gutters, removes low-alpha removal debris, registers whole cels at constant scale against contacts and composes the fixed background. No generative operations at build time.
+Cinema selection: only popcorn/watch keys are used. Sipping keys were excluded because straw contact was inconsistent. Operator typing keys preserve the visible face; no trackball contact is claimed. Benchmark cable free spans are extended to the fixed console; the hose docks at the analyzer. Display and belt activity are rendered by code.
+
+1. MASTER PROMPT
+Inputs: neutral-master.png, base/sit.png, in that order.
+Use case: identity-preserve.
+Asset type: finished hand-drawn 2D character scene for a website selection card, a key pose that will subsequently be animated.
+Input image 1 is Kurt's authoritative neutral master; input image 2 is the approved seated pose. Preserve this EXACT character, not a generic pug: same compact rounded fawn body, short limbs, very large round warm brown eyes with small white highlights, chocolate muzzle and floppy dark brown ears, tiny brows, tight curl tail, warm dark brown ink contour and soft simple cel shading. Keep the proportions, facial landmarks, rounded muzzle and head size of the supplied drawings. Props share the exact same restrained illustrated style. No redesign, no realistic fur, no 3D render, no flat vector replacement, no clothing unless explicitly specified. Character has paws, not human hands.
+Composition: one complete isolated miniature scene, three-quarter view facing LEFT with Kurt's face clearly readable; fixed camera, landscape 3:2 layout, ideally 1536x1024. Leave transparent padding on every side, whole props visible. Truly transparent alpha outside the scene. No enclosing rectangle or room background, no lettering, logos, watermark, grids, text or motion symbols. Soft hand-drawn details, deliberate readable silhouette at 320px wide. Main scene occupies about 85% of canvas width. Kurt's head is visually prominent, not lost among props.
+
+Scene: Kurt has a cozy movie evening on a SMALL, low two-seat sofa upholstered in muted deep teal fabric. He sits naturally on his haunches on the left seat, face in familiar left-facing three-quarter view. He wears old-school white cardboard anaglyph 3D glasses with one RED lens and one BLUE/CYAN lens, shaped to his head; his dark round eyes are still discernible behind the lightly tinted lenses. A striped red-and-cream popcorn tub rests securely between his hind paws on the seat; one forepaw is just above the popcorn, about to take a piece. The other forepaw rests on the seat. A closed softdrink cup with lid and bent straw stands in the sofa's integrated right-side cupholder, close enough for him to lean over and sip. Keep these two props clearly separated. A few popcorn kernels sit within the tub, no spill cloud. Kurt looks relaxed and absorbed in an off-canvas movie to the left. No TV needs to be drawn. Only Kurt, the sofa, popcorn and softdrink; no pillows covering his body.
+
+2. FULL-SCENE KEY SHEET PROMPT
+Inputs: generated cinema-master.png, neutral-master.png, in that order.
+Use case: identity-preserve.
+Asset type: PRODUCTION ANIMATION EXPOSURE SHEET, not concept art, twelve complete scene keyframes to animate one existing approved miniature website scene.
+Input image 1 is the exact scene keyframe to reproduce. Input image 2 is Kurt's binding original neutral character model. Keep his original face/head proportions, short limbs, compact warm fawn body, chocolate muzzle/ears, brown eyes, warm ink and soft cel shading.
+Create ONE landscape PNG sprite sheet, exactly FOUR COLUMNS by THREE ROWS, TWELVE equal rectangular cells read left-to-right then top-to-bottom. Target resolution 3072x1536 pixels, making each cel 768x512, a 3:2 canvas. Do not add a contact-sheet background, borders, labels or dividers. Truly transparent alpha between and outside figures; no dark aura, glow cloud or rectangular backdrops.
+Each cell shows the ENTIRE exact miniature scene from image 1 at the SAME size and the SAME fixed screen coordinates: copy the furniture/equipment positions, camera, projection, scale and line quality exactly across all twelve cells. Every entire prop must fit within its cell, with padding on all sides. Never crop, zoom, recenter, rescale, change camera, redesign the character or independently fit individual cells. Furniture and stationary props are pixel-stable in their placement; only the described acted parts change. Preserve the scene identity, silhouette and details. These are successive frames of ONE action, not twelve scene variations. No hands or human fingers: Kurt's original rounded dog paws.
+Do not mirror. Keep his face visible and all four legs anatomically accounted for where visible. No optical ghosts, duplicate heads or extra paws. Draw full clean animation keys with believable mechanical contacts, not static reprints. The LAST key must naturally join the FIRST key. NO text or logos anywhere.
+
+Scene animation: a relaxed movie-viewing loop with TWO complete, readable actions: eat popcorn, then sip the softdrink. Sofa, popcorn tub, cupholder and white red/blue 3D glasses retain the exact design of image 1. The cup stays in its holder throughout. The glasses stay rigidly on his head.
+Cel 1: reference resting pose, active forepaw hovering at popcorn, head faces movie to the left.
+2: active paw lowers INTO the tub to pick up one kernel; inactive paw stays planted.
+3: paw raises a visible kernel halfway between tub and muzzle.
+4: kernel reaches mouth and mouth opens slightly, paw touching the lower muzzle.
+5: mouth closes, kernel gone, paw begins lowering; a little cheek chewing expression.
+6: active paw returns toward tub, head looks contentedly at movie.
+7: head and upper chest begin turning/leaning toward the cup on the right, paws brace naturally on seat/tub, retain same body mass.
+8: head leans closer to the bent straw, mouth approaching its tip; cup remains fixed.
+9: mouth makes CONTACT with the straw tip, a clear sipping pose. No disconnected straw or floating cup.
+10: brief second sip, slight cheek expression only, glasses maintain geometry.
+11: head eases away and turns back toward offscreen movie; original face proportions.
+12: head and active paw return to the same resting placement as cel 1 so the loop closes. 
+Hold the tub, sofa and cup geometry steady. Genuine drawn arm and head movement; no global scene wobble.
+
+3. FIXED-PROP LAYER EDIT
+Input: first cel of the generated cinema-sheet.png (cropped from 1774x887).
+Use case: precise-object-edit.
+Asset type: a FIXED background layer for frame-by-frame animation.
+Input is the first animation cel. Change only the removal described below. Keep EXACT canvas aspect ratio 3:2, all surviving original pixels/edges/positions, camera, illustration style and color palette. Output one landscape image, 1536x1024 if possible, complete scene with transparent alpha outside props, no glow, shadow cloud, text or added objects. Do not zoom, crop or recenter. Remove ONLY Kurt and the popcorn tub from the sofa. Keep the ENTIRE sofa and the softdrink cup in its cupholder with exactly the same geometry, position, upholstery and straw as input. Reconstruct the empty continuous backrest and seat where Kurt and tub were. Transparent outside sofa/cup. Do not include any pug, paws, tail, glasses, fur, popcorn or cup duplicates.
+
+4. CHARACTER LAYER EDIT
+Input: generated cinema-sheet.png.
+Use case: background-extraction.
+Asset type: a transparent CHARACTER-ONLY animation sprite layer sheet.
+Input is an existing FOUR COLUMN by THREE ROW sprite sheet. Return precisely that 4x3 arrangement with exactly TWELVE equal cells. Preserve the full sheet's 2:1 aspect ratio, target 3072x1536. Keep all surviving character drawings at the same relative positions and scale within their original cells; absolutely no auto-fit, no camera shift, no new character design. Perform object removal only. Transparent alpha everywhere outside retained subjects, including between limbs. No contact-sheet background or cell borders, no added shadow, labels or effects.
+Remove the sofa and the softdrink cup, cupholder and straw from ALL twelve cells, leaving ONLY Kurt with his red/blue 3D glasses, his popcorn tub and any popcorn pieces he is holding. Preserve the existing twelve character poses and their exact positions within their cells, including their head turns and sipping mouth shapes; do not redraw, shift, rescale or recenter them. Replace removed furniture and cup with actual fully transparent alpha. Preserve characters and popcorn, no dark halos.
+

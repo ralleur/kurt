@@ -64,5 +64,11 @@
       "carry-hang",
       "carry-release"
     ]
+  },
+  "kurtz-landing": {
+    "path": "vela-swiftfin",
+    "format": "landing-scenes",
+    "assets": "website/assets/kurt",
+    "runtime": {}
   }
 }

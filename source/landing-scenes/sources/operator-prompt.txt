@@ -1,0 +1,54 @@
+Generation record — operator
+Tool: built-in image_gen; transparent_background=true for every generation/edit.
+Character references: references/neutral-master.png (binding identity), source/animation-v8/cels/base/sit.png (seated proportions).
+Selected active sources: operator-background.png (fixed props), operator-layer.png (12 character keys, 4 columns x 3 rows, 1774x887).
+Intermediate scene master and full-scene sheet are not build inputs; only the two selected layers are retained in source control.
+Preparation: source/landing-scenes/build.py cuts cels in transparent gutters, removes low-alpha removal debris, registers whole cels at constant scale against contacts and composes the fixed background. No generative operations at build time.
+Cinema selection: only popcorn/watch keys are used. Sipping keys were excluded because straw contact was inconsistent. Operator typing keys preserve the visible face; no trackball contact is claimed. Benchmark cable free spans are extended to the fixed console; the hose docks at the analyzer. Display and belt activity are rendered by code.
+
+1. MASTER PROMPT
+Inputs: neutral-master.png, base/sit.png, in that order.
+Use case: identity-preserve.
+Asset type: finished hand-drawn 2D character scene for a website selection card, a key pose that will subsequently be animated.
+Input image 1 is Kurt's authoritative neutral master; input image 2 is the approved seated pose. Preserve this EXACT character, not a generic pug: same compact rounded fawn body, short limbs, very large round warm brown eyes with small white highlights, chocolate muzzle and floppy dark brown ears, tiny brows, tight curl tail, warm dark brown ink contour and soft simple cel shading. Keep the proportions, facial landmarks, rounded muzzle and head size of the supplied drawings. Props share the exact same restrained illustrated style. No redesign, no realistic fur, no 3D render, no flat vector replacement, no clothing unless explicitly specified. Character has paws, not human hands.
+Composition: one complete isolated miniature scene, three-quarter view facing LEFT with Kurt's face clearly readable; fixed camera, landscape 3:2 layout, ideally 1536x1024. Leave transparent padding on every side, whole props visible. Truly transparent alpha outside the scene. No enclosing rectangle or room background, no lettering, logos, watermark, grids, text or motion symbols. Soft hand-drawn details, deliberate readable silhouette at 320px wide. Main scene occupies about 85% of canvas width. Kurt's head is visually prominent, not lost among props.
+
+Scene: Kurt is an intensely focused but endearing computer operator at a compact retro command desk with MANY monitors, evoking the busy operator role in a late-1990s cyberpunk control room. He is still our warm fawn pug, without costume, sunglasses or human anatomy. Show his face in LEFT-facing three-quarter view from the viewer's side of the desk, his whole large head and upper compact seated body visible. He sits on a small swivel stool. In front of him is a shallow curved desk holding a mechanical keyboard and a trackball; his two forepaws rest at two separate parts of the keyboard, about to type. Around the FAR edge of the desk are FIVE small chunky CRT monitors in an arc, on staggered short stands. Angle screen faces toward Kurt while keeping glowing green abstract activity visible to the viewer in three-quarter perspective. Kurt must be visible in front of/among screens, never merely a back view or hidden behind the monitor wall. Displays show different abstract green code-like dashes, file blocks, a waveform and progress bars; absolutely no readable text or real brand marks. Equipment in subdued warm charcoal and slate tones with restrained emerald screen glow; retain Kurt's original warm fur palette. Whole desk, stool and monitors are contained in the scene; no surrounding dark room, no Matrix logo or other film characters.
+
+2. FULL-SCENE KEY SHEET PROMPT
+Inputs: generated operator-master.png, neutral-master.png, in that order.
+Use case: identity-preserve.
+Asset type: PRODUCTION ANIMATION EXPOSURE SHEET, not concept art, twelve complete scene keyframes to animate one existing approved miniature website scene.
+Input image 1 is the exact scene keyframe to reproduce. Input image 2 is Kurt's binding original neutral character model. Keep his original face/head proportions, short limbs, compact warm fawn body, chocolate muzzle/ears, brown eyes, warm ink and soft cel shading.
+Create ONE landscape PNG sprite sheet, exactly FOUR COLUMNS by THREE ROWS, TWELVE equal rectangular cells read left-to-right then top-to-bottom. Target resolution 3072x1536 pixels, making each cel 768x512, a 3:2 canvas. Do not add a contact-sheet background, borders, labels or dividers. Truly transparent alpha between and outside figures; no dark aura, glow cloud or rectangular backdrops.
+Each cell shows the ENTIRE exact miniature scene from image 1 at the SAME size and the SAME fixed screen coordinates: copy the furniture/equipment positions, camera, projection, scale and line quality exactly across all twelve cells. Every entire prop must fit within its cell, with padding on all sides. Never crop, zoom, recenter, rescale, change camera, redesign the character or independently fit individual cells. Furniture and stationary props are pixel-stable in their placement; only the described acted parts change. Preserve the scene identity, silhouette and details. These are successive frames of ONE action, not twelve scene variations. No hands or human fingers: Kurt's original rounded dog paws.
+Do not mirror. Keep his face visible and all four legs anatomically accounted for where visible. No optical ghosts, duplicate heads or extra paws. Draw full clean animation keys with believable mechanical contacts, not static reprints. The LAST key must naturally join the FIRST key. NO text or logos anywhere.
+
+Scene animation: a busy operator works across the keyboard, trackball and multiple screens. Preserve the exact FIVE-monitor desk, keyboard, stool and original warm Kurt design of image 1. The furniture and monitor housings are immobile, with no camera shift.
+Cel 1: reference pose, both rounded paws at distinct keyboard positions, eyes engaged with left display.
+2: near paw presses a keyboard key while far paw lifts slightly; eyes remain on left display.
+3: far paw presses another key while near paw lifts slightly, tiny purposeful head tilt.
+4: near paw presses again, far paw rests on keyboard, gaze starts shifting to center screen.
+5: near paw moves from keyboard toward the RED TRACKBALL at viewer lower-left, far paw remains on keyboard.
+6: near paw visibly touches and rolls the red trackball, gaze at central monitor.
+7: near paw still operates trackball, slight head turn toward right-side monitor while preserving full visible face.
+8: near paw returns halfway to keyboard; progress bars on screens have advanced.
+9: both paws back on keyboard in distinct typing positions, gaze rightward.
+10: alternate keyboard press, eyes glance toward left again.
+11: near paw presses, far paw lifts slightly, gaze returning to first screen.
+12: both paws return to cel 1 placements and expression to close the loop.
+Across all keys, green abstract code dashes and graph traces scroll or update INSIDE their fixed displays; meter bars progress then restart softly. No letters or numbers or new screen layout. Meaningful typing and trackball operation, not whole-scene bobbing. Keep tail curl, body mass, snout and ear size stable. No human fingers or reaching beyond the desk.
+
+3. FIXED-PROP LAYER EDIT
+Input: first cel of the generated operator-sheet.png (cropped from 1774x887).
+Use case: precise-object-edit.
+Asset type: a FIXED background layer for frame-by-frame animation.
+Input is the first animation cel. Change only the removal described below. Keep EXACT canvas aspect ratio 3:2, all surviving original pixels/edges/positions, camera, illustration style and color palette. Output one landscape image, 1536x1024 if possible, complete scene with transparent alpha outside props, no glow, shadow cloud, text or added objects. Do not zoom, crop or recenter. Remove ONLY Kurt from the stool and keyboard. Keep all FIVE monitors, their exact visible green displays, entire desk, keyboard, red trackball and stool, in precisely the same placement and view. Reconstruct desk/keyboard and empty seat behind him. Do not move any furniture or change keyboard. No animal, fur, tail or paws. Transparent outside props.
+
+4. CHARACTER LAYER EDIT
+Input: generated operator-sheet.png.
+Use case: background-extraction.
+Asset type: a transparent CHARACTER-ONLY animation sprite layer sheet.
+Input is an existing FOUR COLUMN by THREE ROW sprite sheet. Return precisely that 4x3 arrangement with exactly TWELVE equal cells. Preserve the full sheet's 2:1 aspect ratio, target 3072x1536. Keep all surviving character drawings at the same relative positions and scale within their original cells; absolutely no auto-fit, no camera shift, no new character design. Perform object removal only. Transparent alpha everywhere outside retained subjects, including between limbs. No contact-sheet background or cell borders, no added shadow, labels or effects.
+Remove the desk, ALL monitors, keyboard, red trackball and stool from ALL twelve cells, leaving ONLY Kurt in his existing seated pose with his typing paws. Preserve positions and scale exactly within each original cell. For cel 7 (row 2 column 3), replace the back-of-head view with the same three-quarter visible face and seated head placement as cel 8 (row2 column4), looking slightly upward. Every other character pose is unchanged. Replace removed equipment with genuine fully transparent alpha, no dark halos. No human fingers.
+

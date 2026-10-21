@@ -10,6 +10,19 @@ from sync import prepare, install, safe
 
 
 class SyncTests(unittest.TestCase):
+    def test_landing_scenes_pin_artwork_without_importing_runtime(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(prepare('kurtz-landing', root, 'scene-revision'))
+            self.assertIsNone(prepare('kurtz-landing', root, 'scene-revision', check=True))
+            lock = json.loads((root / 'kurt.lock.json').read_text())
+            self.assertEqual(lock['artworkVersion'], 'kurt-landing-scenes-1')
+            self.assertIn('website/assets/kurt/cinema.webp', lock['files'])
+            self.assertFalse(any(name.endswith(('.js', '.mjs')) for name in lock['files']))
+            (root / 'website/assets/kurt/cinema.webp').write_bytes(b'local change')
+            with self.assertRaisesRegex(ValueError, 'nothing overwritten'):
+                prepare('kurtz-landing', root, 'scene-revision', check=True)
+
     def test_install_check_and_modified_file_protection(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<html lang="de">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kurt · Drei Szenen für kurtz.app</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f1eee7;color:#242622;font:16px/1.5 system-ui,sans-serif}main{max-width:1320px;margin:auto;padding:48px 28px}h1{font-size:clamp(30px,4vw,52px);line-height:1.1;letter-spacing:-.04em;margin:10px 0 14px}p{max-width:68ch;color:#62675f}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.15em}header{margin-bottom:28px}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:25px 0}button,select{font:inherit;border:1px solid #b5b8ad;border-radius:9px;padding:9px 14px;background:#fff;color:#242622;cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #417b61;outline-offset:3px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.card{min-width:0;padding:22px 0;border-top:1px solid #b9bdb1}.art{aspect-ratio:3/2;display:flex;align-items:center;background:#e4e7df;border-radius:18px;overflow:hidden}.art img{display:block;width:100%;height:auto}.card h2{font-size:22px;letter-spacing:-.02em;margin:22px 0 6px}.card p{font-size:14px;margin:6px 0}.card small{color:#70766b}.dark{background:#202621;color:#f4f0e6}.dark p,.dark small{color:#bdc6b9}.dark .art{background:#303b31}.mirrored .art img{transform:scaleX(-1)}footer{font-size:12px;margin-top:38px}a{color:inherit}.scrub{width:100%;margin-top:14px}.large .grid{grid-template-columns:1fr}.large .card{max-width:850px}.medium .grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:850px){.grid,.medium .grid{grid-template-columns:1fr}.card{max-width:650px}main{padding:30px 20px}}
+</style>
+<main>
+<header><div class="eyebrow">Kurt · Szenenstudien 01</div><h1>Drei Aufgaben. Derselbe Kurt.</h1><p>Videoabend, Leistungstest und Operator-Pult. Die Kulissen bleiben ruhig; Kurt handelt in jeder Szene. Diese Vorschau dient zur Prüfung der Animationen.</p></header>
+<div class="controls"><button id="pause" type="button" aria-pressed="false">Animationen pausieren</button><button id="theme" type="button" aria-pressed="false">Dunkler Hintergrund</button><button id="mirror" type="button" aria-pressed="false">Spiegeln</button><label>Ansicht <select id="size"><option value="">Karten</option><option value="medium">Mittel</option><option value="large">Groß</option></select></label><label id="scrub-control" hidden><input id="scrub-mode" type="checkbox"> Einzelbilder prüfen</label></div>
+<div class="grid" id="scenes"></div>
+<footer>Kurt by <a href="https://github.com/ralleur/kurt">Ralleur</a> · <a href="CC-BY-4.0.txt">CC BY 4.0</a> · Neue Szenenzeichnungen und Animationen für kurtz.app.</footer>
+</main>
+<script type="module">
+const manifest=await fetch('manifest.json').then(r=>{if(!r.ok)throw Error('Manifest nicht geladen');return r.json()});
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+let paused=reduced.matches, hidden=document.hidden, scrubbing=false;
+const cards=[];
+document.querySelector('#scrub-control').hidden=!new URL(location.href).searchParams.has('review');
+for(const [id,scene] of Object.entries(manifest.scenes)){
+ const card=document.createElement('article');card.className='card';
+ const art=document.createElement('div');art.className='art';
+ const img=new Image(manifest.width,manifest.height);img.alt=scene.action;img.decoding='async';art.append(img);
+ const h=document.createElement('h2');h.textContent=scene.label;
+ const p=document.createElement('p');p.textContent=scene.action;
+ const timing=document.createElement('small');timing.textContent=`${(scene.durationMs/1000).toLocaleString('de',{maximumFractionDigits:1})} Sekunden · ${manifest.fps} fps · Loop`;
+ const slider=document.createElement('input');slider.className='scrub';slider.type='range';slider.min=0;slider.max=scene.frames-1;slider.value=0;slider.hidden=true;slider.setAttribute('aria-label',`${scene.label}: Einzelbild`);
+ slider.addEventListener('input',()=>{img.src=`work/${id}/${String(slider.value).padStart(3,'0')}.png`});
+ card.append(art,h,p,timing,slider);document.querySelector('#scenes').append(card);cards.push({card,img,slider,scene,id,visible:true});
+}
+function update(){for(const c of cards){const src=scrubbing?`work/${c.id}/${String(c.slider.value).padStart(3,'0')}.png`:paused||hidden||!c.visible?c.scene.poster:c.scene.animation;if(c.img.getAttribute('src')!==src)c.img.src=src;c.slider.hidden=!scrubbing}document.querySelector('#pause').textContent=paused?'Animationen abspielen':'Animationen pausieren';document.querySelector('#pause').setAttribute('aria-pressed',String(paused))}
+document.querySelector('#pause').onclick=()=>{paused=!paused;update()};
+for(const [id,cls] of [['theme','dark'],['mirror','mirrored']])document.querySelector('#'+id).onclick=e=>{const active=document.body.classList.toggle(cls);e.target.setAttribute('aria-pressed',String(active))};
+document.querySelector('#size').onchange=e=>{document.body.classList.remove('large','medium');if(e.target.value)document.body.classList.add(e.target.value)};
+document.querySelector('#scrub-mode').onchange=e=>{scrubbing=e.target.checked;update()};
+document.addEventListener('visibilitychange',()=>{hidden=document.hidden;update()});reduced.addEventListener('change',e=>{paused=e.matches;update()});
+const observer=new IntersectionObserver(entries=>{for(const e of entries){cards.find(c=>c.card===e.target).visible=e.isIntersecting}update()});cards.forEach(c=>observer.observe(c.card));update();
+</script>
+</html>
