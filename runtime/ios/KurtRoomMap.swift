@@ -5,6 +5,11 @@ import CoreGraphics
 struct KurtPoint: Codable, Hashable { var x: Double; var y: Double }
 struct KurtRegion: Codable, Hashable { var kind: String; var points: [KurtPoint] }
 
+struct KurtCostume: Decodable {
+    var label: String
+    var pages: [String]
+}
+
 struct KurtAtlasManifest: Decodable {
     var version: String
     var fps: Double
@@ -15,6 +20,7 @@ struct KurtAtlasManifest: Decodable {
     var bodyWidth: Double
     var anchor: KurtPoint
     var pages: [String]
+    var costumes: [String: KurtCostume]? = nil
     var frames: [KurtFrame]
     var routeFrameCount: Int
     var sequences: [KurtSequence]

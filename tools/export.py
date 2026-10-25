@@ -15,6 +15,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 PROFILES = json.loads((ROOT / 'profiles.json').read_text())
 EFFECTS = ['poop', 'vomit', 'poop-drop', 'vomit-drop']
+COSTUMES = json.loads((ROOT / 'source/costumes/catalog.json').read_text())
 
 
 def digest(path):
@@ -22,7 +23,7 @@ def digest(path):
 
 
 def large_source_stamp():
-    paths = subprocess.check_output(['git', '-C', str(ROOT), 'ls-files', '--cached', '--others', '--exclude-standard', 'source', 'tools/build-artwork.mjs'], text=True).splitlines()
+    paths = subprocess.check_output(['git', '-C', str(ROOT), 'ls-files', '--cached', '--others', '--exclude-standard', 'source', 'tools/build-artwork.mjs', 'tools/build-costumes.mjs'], text=True).splitlines()
     return {name: digest(ROOT / name) for name in sorted(set(paths)) if (ROOT / name).is_file()}
 
 
@@ -32,8 +33,27 @@ def large_source():
     current = large_source_stamp()
     if not stamp.exists() or json.loads(stamp.read_text()) != current:
         subprocess.run(['node', str(ROOT / 'tools/build-artwork.mjs'), '--large'], cwd=ROOT, check=True)
-        stamp.write_text(json.dumps(large_source_stamp(), sort_keys=True))
-    return directory / 'animation-v12'
+        stamp.write_text(json.dumps(current, sort_keys=True))
+    return directory / 'animation-v13'
+
+
+def costume_sources(atlas, large=False):
+    size = 512 if large else 256
+    directory = ROOT / '.build/costumes' / str(size)
+    stamp = directory / 'inputs.json'
+    current = large_source_stamp()
+    if not stamp.exists() or json.loads(stamp.read_text()) != current:
+        subprocess.run(['node', str(ROOT / 'tools/build-costumes.mjs')] + (['--large'] if large else []), cwd=ROOT, check=True)
+        stamp.write_text(json.dumps(current, sort_keys=True))
+    result = {}
+    for name, metadata in COSTUMES.items():
+        source = directory / name / 'animation-v13'
+        dressed = json.loads((source / 'manifest.json').read_text())
+        # Exact shared cell addresses and events are essential to a live swap.
+        if dressed != atlas:
+            raise ValueError(f'{name}: costume no longer matches the base animation manifest; rebuild artwork first')
+        result[name] = source
+    return result
 
 
 def source_stamp(profile):
@@ -42,7 +62,7 @@ def source_stamp(profile):
         return {'profile': PROFILES[profile], 'exporter': digest(Path(__file__)),
                 'inputs': {str(p.relative_to(ROOT)): digest(p) for p in paths if p.is_file() and '__pycache__' not in p.parts}}
     return {'profile': PROFILES[profile], 'inputs': {p.name: digest(p) for p in sorted((ROOT / 'assets').iterdir()) if p.is_file()},
-            'exporter': digest(Path(__file__)), **({'largeInputs': large_source_stamp()} if profile == 'website' else {})}
+            'costumeInputs': large_source_stamp(), 'exporter': digest(Path(__file__)), **({'largeInputs': large_source_stamp()} if profile == 'website' else {})}
 
 
 def export(profile, large=False):
@@ -67,15 +87,26 @@ def export(profile, large=False):
     destination.mkdir(parents=True)
     atlas = json.loads((source / 'manifest.json').read_text())
     inputs = {'manifest.json': digest(source / 'manifest.json')}
+    costumes = costume_sources(atlas, large)
+    costume_metadata = {name: {k: v for k, v in COSTUMES[name].items() if k != 'parts'} for name in costumes}
     if config['format'] == 'ios':
         for name in atlas['pages'] + ['manifest.json', 'room-map.json'] + [f'{n}.png' for n in EFFECTS]:
             shutil.copyfile(source / name, destination / name)
+        for name, directory in costumes.items():
+            target = destination / 'costumes' / name
+            target.mkdir(parents=True)
+            for filename in atlas['pages']:
+                shutil.copyfile(directory / filename, target / filename)
+            costume_metadata[name]['pages'] = [f'costumes/{name}/{file}' for file in atlas['pages']]
+        (destination / 'manifest.json').write_text(json.dumps(dict(atlas, costumes=costume_metadata), separators=(',', ':')) + '\n')
         (destination.parent / 'inputs.json').write_text(json.dumps(source_stamp(profile), sort_keys=True))
         return destination
 
     cell, columns = config['cell'], config['columns']
     per_page = columns * columns
     pages, cels, lookup, locations, sequences = {}, [], {}, {}, {}
+    costume_cels = {name: [] for name in costumes}
+    costume_pages = {}
     for name in config['clips']:
         original = next(s for s in atlas['sequences'] if s['id'] == name)
         frames = []
@@ -90,10 +121,23 @@ def export(profile, large=False):
                 cel = pages[page_name].crop((x, y, x + atlas['cell'], y + atlas['cell']))
                 if cell != atlas['cell']:
                     cel = cel.resize((cell, cell), Image.Resampling.LANCZOS)
-                key = hashlib.sha256(cel.tobytes()).hexdigest()
+                variants = {}
+                for costume, directory in costumes.items():
+                    page_key = (costume, page_name)
+                    if page_key not in costume_pages:
+                        costume_pages[page_key] = Image.open(directory / page_name).convert('RGBA')
+                        inputs[f'costumes/{costume}/{page_name}'] = digest(directory / page_name)
+                    variant = costume_pages[page_key].crop((x, y, x + atlas['cell'], y + atlas['cell']))
+                    if cell != atlas['cell']:
+                        variant = variant.resize((cell, cell), Image.Resampling.LANCZOS)
+                    variants[costume] = variant
+                # Equal base pixels may have different costume registrations.
+                key = hashlib.sha256(cel.tobytes() + b''.join(v.tobytes() for v in variants.values())).hexdigest()
                 if key not in lookup:
                     lookup[key] = len(cels)
                     cels.append(cel)
+                    for costume, variant in variants.items():
+                        costume_cels[costume].append(variant)
                 locations[location] = lookup[key]
             index = locations[location]
             if config['format'] == 'mutti':
@@ -132,7 +176,22 @@ def export(profile, large=False):
         name = f"{'atlas' if config['format'] == 'mutti' else 'kurt'}-{len(filenames)}.webp"
         sheet.save(destination / name, lossless=True, method=6)
         filenames.append(name)
-    common = {'fps': atlas['fps'], 'cell': cell, 'columns': columns, 'anchor': atlas['anchor'], 'pages': filenames}
+    for costume, variants in costume_cels.items():
+        directory = destination / 'costumes' / costume
+        directory.mkdir(parents=True)
+        for start in range(0, len(variants), per_page):
+            selected = variants[start:start + per_page]
+            rows = columns if config['format'] == 'mutti' else math.ceil(len(selected) / columns)
+            sheet = Image.new('RGBA', (columns * cell, rows * cell))
+            for i, cel in enumerate(selected):
+                sheet.paste(cel, ((i % columns) * cell, (i // columns) * cell))
+            sheet.save(directory / filenames[start // per_page], lossless=True, method=6)
+        costume_metadata[costume]['pages'] = [f'costumes/{costume}/{file}' for file in filenames]
+        pose = sequences['rise-seat']['frames'][-1]['tile'] if config['format'] == 'mutti' else sequences['walk-floor']['frames'][0]['cell']
+        poster = 'rest.png' if config['format'] == 'mutti' else 'still.webp'
+        variants[pose].save(directory / poster, **({} if poster.endswith('.png') else {'lossless': True}))
+        costume_metadata[costume]['still'] = f'costumes/{costume}/{poster}'
+    common = {'fps': atlas['fps'], 'cell': cell, 'columns': columns, 'anchor': atlas['anchor'], 'pages': filenames, 'costumes': costume_metadata}
     if config['format'] == 'mutti':
         manifest = dict(common, version=atlas['version'], bodyRatio=atlas['bodyWidth'] / atlas['sourceSize'], clips=sequences)
         cels[sequences['rise-seat']['frames'][-1]['tile']].save(destination / 'rest.png')
@@ -147,7 +206,7 @@ def export(profile, large=False):
             Image.open(source / (name + '.png')).save(destination / (name + '.webp'), lossless=True)
     (destination / 'manifest.json').write_text(json.dumps(manifest, separators=(',', ':')) + '\n')
     provenance = {'repository': 'https://github.com/ralleur/kurt', 'artworkVersion': atlas['version'], 'profile': profile,
-                  'changes': f'Original frames, {cell}px lossless WebP, identical-pixel deduplication. No redrawing.', 'uniqueCels': len(cels), 'inputs': inputs}
+                  'changes': f'Original frames plus optional registered costume drawings, {cell}px lossless WebP, identical-pixel deduplication. Shared timing and cell addresses.', 'uniqueCels': len(cels), 'inputs': inputs}
     (destination / 'provenance.json').write_text(json.dumps(provenance, indent=2) + '\n')
     (destination / 'README.txt').write_text('Kurt — Ralleur\n\nGenerated from https://github.com/ralleur/kurt; see kurt.lock.json in the consumer root.\nDo not edit these generated assets. Artwork: Kurt by Ralleur, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Credit the source and indicate changes.\nSource hashes and transformations: provenance.json.\n')
     if not large:

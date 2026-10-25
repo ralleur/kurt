@@ -3,7 +3,8 @@
 // Clip an isolated iris texture behind a fixed, inset eye opening. Source
 // samples are limited to the iris core: no lid, fur or muzzle can travel.
 import sharp from 'sharp';
-import {cell, atlasDirectory} from '../shared/build-profile.mjs';
+import {dress} from '../costumes/dress.mjs';
+import {cell, atlasDirectory, costume} from '../shared/build-profile.mjs';
 import {readFile,writeFile,copyFile,mkdir} from 'node:fs/promises';
 const dir=new URL('.',import.meta.url).pathname,previous=new URL('../animation-v8/',import.meta.url).pathname;
 const out=atlasDirectory('animation-v12'); await mkdir(out,{recursive:true});await mkdir(dir+'reviews',{recursive:true});
@@ -101,10 +102,15 @@ function breathe(input,pose,amount,angle=0,gaze=[0,0]){
 }
 async function texture(pose,expression,level,angle=0,gaze=[0,0]){
  const key=[pose,expression,level,angle,...gaze].join(':');if(cache.has(key))return cache.get(key);
- const source=await drawing(pose,expression),amount=level*(pose==='sleep'||pose==='lie'?5:3.5)/12;
+ let source=await drawing(pose,expression);
+ const amount=level*(pose==='sleep'||pose==='lie'?5:3.5)/12;
+ // Refraction samples the finished pupils. Applying gaze after the glasses
+ // would move a second, unmagnified iris inside the enlarged painted eye.
+ if(costume)source=await sharp(await dress('base/'+pose,await sharp(moveEyes(source,pose,gaze),{raw:{width:512,height:512,channels:4}}).png().toBuffer())).ensureAlpha().raw().toBuffer();
+ const deformationGaze=costume?[0,0]:gaze;
  const resized=async data=>sharp(data,{raw:{width:512,height:512,channels:4}}).resize(cell).raw().toBuffer();
- const data=await resized(breathe(source,pose,amount,angle,gaze));
- if(gaze.some(Boolean)){
+ const data=await resized(breathe(source,pose,amount,angle,deformationGaze));
+ if(!costume&&gaze.some(Boolean)){
   const fixed=await resized(breathe(source,pose,amount,angle));
   // Downsampling must not spread a moving iris into adjacent lid pixels.
   // Reapply the eye opening at the actual atlas resolution after filtering.
@@ -148,6 +154,7 @@ for(let page=0;page<Math.ceil(textures.length/64);page++){
 }
 atlas.version='kurt-a-refined-12';
 await writeFile(out+'manifest.json',JSON.stringify(atlas,null,2)+'\n');
+if (!costume) {
 const cards=[];
 const checks=[];
 for(const [row,def]of definitions.entries())for(const [col,gaze]of [[0,0],[3,5],[-3,4],[8,5],[5,10]].entries()){
@@ -167,3 +174,4 @@ await writeFile(dir+'reviews/assets.json',JSON.stringify({version:atlas.version,
 console.log({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,uniqueIdleTextures:textures.length});
 await import('./validate-lids.mjs');
 if (cell === 256) await import('./render-preview.mjs');
+}

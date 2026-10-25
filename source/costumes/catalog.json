@@ -1,0 +1,116 @@
+{
+  "oma": {
+    "label": "Oma",
+    "description": "Graue Lockenper\u00fccke mit Dutt, dicke Brille und gebl\u00fcmter Arbeitskittel",
+    "parts": {
+      "head": {
+        "file": "oma/sources/painted-parts.png",
+        "crop": [
+          76,
+          128,
+          501,
+          342
+        ],
+        "place": [
+          91,
+          124,
+          202,
+          114
+        ]
+      },
+      "eyes": "oma/glasses.svg",
+      "body": {
+        "file": "oma/sources/painted-parts.png",
+        "crop": [
+          37,
+          667,
+          575,
+          514
+        ],
+        "place": [
+          52,
+          24,
+          458,
+          414
+        ]
+      },
+      "headBack": {
+        "file": "oma/sources/painted-parts.png",
+        "crop": [
+          712,
+          135,
+          440,
+          361
+        ],
+        "place": [
+          86,
+          99,
+          190,
+          156
+        ]
+      },
+      "bodyBack": {
+        "file": "oma/sources/painted-parts.png",
+        "crop": [
+          643,
+          667,
+          575,
+          512
+        ],
+        "place": [
+          52,
+          24,
+          458,
+          414
+        ]
+      },
+      "neck": "oma/collar.svg",
+      "eyesProfile": "oma/glasses-profile.svg",
+      "headProfile": {
+        "file": "oma/sources/painted-parts.png",
+        "crop": [
+          76,
+          128,
+          501,
+          342
+        ],
+        "place": [
+          91,
+          124,
+          202,
+          94
+        ]
+      }
+    },
+    "license": "CC-BY-4.0",
+    "credit": "Kurt by Ralleur",
+    "optics": {
+      "magnification": 1.55,
+      "front": [
+        {
+          "center": [
+            120,
+            220
+          ],
+          "outline": "M98 200 Q116 190 135 201 Q145 215 138 232 Q131 246 118 242 Q102 240 99 223 Q95 210 98 200Z"
+        },
+        {
+          "center": [
+            191,
+            244
+          ],
+          "outline": "M163 217 Q190 205 222 220 Q227 241 216 259 Q204 273 185 268 Q164 262 161 244 Q158 230 163 217Z"
+        }
+      ],
+      "profile": [
+        {
+          "center": [
+            120,
+            220
+          ],
+          "outline": "M108 198 Q120 193 130 203 Q140 220 130 237 Q118 247 109 232 Q102 216 108 198Z"
+        }
+      ]
+    }
+  }
+}

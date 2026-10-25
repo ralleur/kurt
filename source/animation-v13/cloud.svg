@@ -1,0 +1,44 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Kurt by Ralleur. A separate effect drawing; the approved dog is unchanged. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="cream" x1="0" y1="0" x2="0.15" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#fffef8"/>
+      <stop offset="0.64" stop-color="#fffaf0"/>
+      <stop offset="1" stop-color="#eee7dc"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#cream)" stroke="#bdb4a4" stroke-width="2.8" stroke-linejoin="round" d="
+    M 90 486
+    C 58 486 42 468 46 442
+    C 22 431 14 408 24 386
+    C 4 362 8 330 34 315
+    C 14 290 21 259 44 247
+    C 31 217 48 189 77 185
+    C 74 154 94 130 124 133
+    C 139 105 171 104 192 124
+    C 210 104 245 109 260 131
+    C 285 109 318 118 330 144
+    C 359 131 390 145 394 173
+    C 431 162 457 183 453 216
+    C 483 219 499 242 485 269
+    C 504 288 500 317 482 328
+    C 504 352 496 381 480 392
+    C 499 419 489 445 471 453
+    C 474 478 451 495 428 488
+    C 406 506 375 500 365 483
+    C 335 498 312 493 300 480
+    C 270 500 244 497 232 481
+    C 210 499 179 496 163 480
+    C 140 498 109 499 90 486 Z"/>
+  <g fill="none" stroke="#d1c7b7" stroke-width="3" stroke-linecap="round">
+    <path d="M 77 185 C 96 181 113 191 116 207 M 44 247 C 64 239 81 249 83 266"/>
+    <path d="M 260 131 C 270 146 267 163 259 171 M 394 173 C 393 188 383 199 370 201"/>
+    <path d="M 482 328 C 465 319 446 324 438 338 M 471 453 C 458 440 440 440 431 449"/>
+    <path d="M 163 480 C 171 461 163 448 149 443 M 34 315 C 51 310 65 316 69 328"/>
+  </g>
+  <g fill="none" stroke="#fffefb" stroke-width="9" stroke-linecap="round" opacity=".85">
+    <path d="M 111 161 C 108 151 112 145 121 145 M 148 133 C 158 122 173 124 180 131"/>
+    <path d="M 287 140 C 300 134 312 141 315 151 M 412 190 C 427 187 438 198 438 210"/>
+  </g>
+</svg>

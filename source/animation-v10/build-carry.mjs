@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Register the generated drawings to the approved model's size and floor.
 import sharp from 'sharp';
-import {cell, atlasDirectory} from '../shared/build-profile.mjs';
+import {dress} from '../costumes/dress.mjs';
+import {cell, atlasDirectory, costume} from '../shared/build-profile.mjs';
 import {readFile,writeFile,copyFile,mkdir} from 'node:fs/promises';
 const dir=new URL('.',import.meta.url).pathname, previous=atlasDirectory('animation-v9');
 const out=atlasDirectory('animation-v10'); await mkdir(out,{recursive:true});await mkdir(dir+'cels',{recursive:true});await mkdir(dir+'reviews',{recursive:true});
@@ -17,8 +18,8 @@ for(let i=0;i<8;i++){
  for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++)if(data[(y*info.width+x)*4+3]>12){x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);}
  const scale=1.08,w=Math.round((x1-x0+1)*scale),h=Math.round((y1-y0+1)*scale),dx=Math.round(258-w/2),dy=477-h;
  const cel=await sharp(data,{raw:info}).extract({left:x0,top:y0,width:x1-x0+1,height:y1-y0+1}).resize(w,h).png().toBuffer();
- const registered=await sharp({create:{width:512,height:512,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite([{input:cel,left:dx,top:dy}]).png().toBuffer();
- await writeFile(dir+`cels/carry-${i}.png`,registered);
+ const registered=await dress(`carry/${i}`, await sharp({create:{width:512,height:512,channels:4,background:{r:0,g:0,b:0,alpha:0}}}).composite([{input:cel,left:dx,top:dy}]).png().toBuffer());
+ if (!costume) await writeFile(dir+`cels/carry-${i}.png`,registered);
  textures.push(await sharp(registered).resize(cell).png().toBuffer());
  grips.push({x:(dx+(tips[i][0]-left-x0)*scale)/512,y:(dy+(tips[i][1]-top-y0)*scale)/512});
  cards.push({input:await sharp(registered).flop().resize(256).png().toBuffer(),left:i%4*256,top:Math.floor(i/4)*256});
@@ -38,6 +39,6 @@ for(const def of definitions){
 }
 atlas.version='kurt-a-refined-10';
 await writeFile(out+'manifest.json',JSON.stringify(atlas,null,2)+'\n');
-await sharp({create:{width:1024,height:512,channels:4,background:'#e4eef6'}}).composite(cards).png().toFile(dir+'reviews/carry-contact-sheet.png');
-await writeFile(dir+'reviews/assets.json',JSON.stringify({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,grips,definitions},null,2)+'\n');
+if (!costume) await sharp({create:{width:1024,height:512,channels:4,background:'#e4eef6'}}).composite(cards).png().toFile(dir+'reviews/carry-contact-sheet.png');
+if (!costume) await writeFile(dir+'reviews/assets.json',JSON.stringify({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,grips,definitions},null,2)+'\n');
 console.log({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length});

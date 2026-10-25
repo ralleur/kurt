@@ -3,6 +3,41 @@
 import {KurtMotion} from './kurt-motion.mjs';
 
 export class KurtCompanion extends HTMLElement {
+  static observedAttributes = ['costume'];
+  get costume() { return this.getAttribute('costume') || ''; }
+  set costume(value) { this.setAttribute('costume', value || ''); }
+  attributeChangedCallback() { if (this.atlas) void this.applyCostume(); }
+  async applyCostume() {
+    const request = this.costumeRequest = (this.costumeRequest || 0) + 1;
+    const id = this.costume;
+    try {
+      const definition = id ? this.atlas.costumes?.[id] : null;
+      if (id && !definition) throw new Error(`Unknown Kurt costume: ${id}`);
+      let pages = this.basePages;
+      if (definition) {
+        pages = this.costumeCache.get(id);
+        if (!pages) {
+          pages = await Promise.all(definition.pages.map(async name => {
+            const image = new Image();
+            image.src = new URL(name, this.assetBase);
+            await image.decode();
+            return image;
+          }));
+          if (request !== this.costumeRequest || this.abort.signal.aborted) return;
+          this.costumeCache.set(id, pages);
+        }
+      }
+      if (request !== this.costumeRequest || this.abort.signal.aborted) return;
+      this.pages = pages;
+      this.activeCostume = id;
+      this.canvas.setAttribute('aria-label', definition ? `Kurt, an animated pug · ${definition.label}` : 'Kurt, an animated pug');
+      this.draw();
+      this.dispatchEvent(new CustomEvent('kurt-costume-change', {detail: {costume: id}}));
+    } catch (error) {
+      if (request === this.costumeRequest && !this.abort.signal.aborted)
+        this.dispatchEvent(new CustomEvent('kurt-error', {detail: error}));
+    }
+  }
   constructor() {
     super();
     this.attachShadow({mode: 'open'}).innerHTML = `
@@ -46,6 +81,7 @@ export class KurtCompanion extends HTMLElement {
   }
   disconnectedCallback() {
     this.abort.abort();
+    this.costumeRequest = (this.costumeRequest || 0) + 1;
     this.resizeObserver.disconnect();
     this.intersectionObserver.disconnect();
     cancelAnimationFrame(this.timer);
@@ -70,8 +106,13 @@ export class KurtCompanion extends HTMLElement {
       if (signal.aborted) return;
       this.atlas = atlas;
       this.pages = pages;
+      this.basePages = pages;
+      this.costumeCache = new Map();
+      this.assetBase = base;
+      this.activeCostume = '';
       this.motion = new KurtMotion(atlas, this.clientWidth, 64);
       this.control.hidden = false;
+      void this.applyCostume();
       this.draw();
       this.sync();
     } catch (error) {

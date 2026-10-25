@@ -3,7 +3,8 @@
 // original head and grounded paws are immutable. Existing drawings supply
 // expressions, with the body kept from the owner's chosen neutral pose.
 import sharp from 'sharp';
-import {cell, atlasDirectory} from '../shared/build-profile.mjs';
+import {dress} from '../costumes/dress.mjs';
+import {cell, atlasDirectory, costume} from '../shared/build-profile.mjs';
 import {readFile,writeFile,copyFile,mkdir} from 'node:fs/promises';
 const dir=new URL('.',import.meta.url).pathname,previous=new URL('../animation-v8/',import.meta.url).pathname;
 const out=atlasDirectory('animation-v9'); await mkdir(out,{recursive:true});await mkdir(dir+'reviews',{recursive:true});
@@ -38,7 +39,8 @@ async function drawing(pose,expression){
    }
   }
  }
- variants.set(key,data);return data;
+ const dressed=costume?await sharp(await dress('base/'+pose, await sharp(data,{raw:{width:512,height:512,channels:4}}).png().toBuffer())).ensureAlpha().raw().toBuffer():data;
+ variants.set(key,dressed);return dressed;
 }
 function breathe(input,pose,amount,angle=0){
  if(!amount&&!angle)return input;
@@ -93,6 +95,7 @@ for(let page=0;page<Math.ceil(textures.length/64);page++){
 }
 atlas.version='kurt-a-refined-09';
 await writeFile(out+'manifest.json',JSON.stringify(atlas,null,2)+'\n');
+if (!costume) {
 const cards=[];
 for(const [row,def]of definitions.entries())for(const [col,level]of [0,12].entries()){
  const data=breathe(await drawing(def.pose,''),def.pose,level*(row>=2?5:3.5)/12);
@@ -101,3 +104,5 @@ for(const [row,def]of definitions.entries())for(const [col,level]of [0,12].entri
 await sharp({create:{width:512,height:1024,channels:4,background:'#e4eef6'}}).composite(cards).png().toFile(dir+'reviews/breath-extremes.png');
 await writeFile(dir+'reviews/assets.json',JSON.stringify({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,uniqueIdleTextures:textures.length,loops:definitions},null,2)+'\n');
 console.log({version:atlas.version,frames:atlas.frames.length,pages:atlas.pages.length,uniqueIdleTextures:textures.length});
+
+}

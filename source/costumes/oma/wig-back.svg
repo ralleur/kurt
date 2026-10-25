@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<!-- SPDX-License-Identifier: CC-BY-4.0; Kurt by Ralleur. Cropped nape, not a curtain over the back. -->
+<defs><linearGradient id="back-silver" x1=".25" y1="0" x2=".7" y2="1"><stop stop-color="#e4e1d7"/><stop offset=".45" stop-color="#bdc3ba"/><stop offset="1" stop-color="#8e9992"/></linearGradient></defs>
+<g stroke-linecap="round" stroke-linejoin="round">
+ <path d="M214 134 C208 120 218 105 229 104 C238 91 253 96 259 105 C277 108 280 125 273 136 C272 153 252 159 243 151 C228 154 219 147 214 134Z" fill="url(#back-silver)" stroke="#645b50" stroke-width="3.8"/>
+ <path d="M226 119 C235 107 255 110 261 120 C266 132 255 143 243 138 C233 133 240 122 248 125" fill="none" stroke="#84918b" stroke-width="3"/>
+ <path d="M87 186 C79 174 83 159 95 154 C95 138 109 126 123 130 C136 115 155 117 164 125 C180 115 199 120 205 131 C223 128 240 138 239 151 C258 154 263 169 258 184 Q269 199 259 211 Q267 228 250 236 Q249 250 232 248 Q221 260 208 250 Q194 261 181 250 Q165 260 153 248 Q137 254 126 242 Q110 246 106 230 Q93 228 96 211 Q82 204 87 186Z" fill="url(#back-silver)" stroke="#645b50" stroke-width="3.8"/>
+ <g fill="none" stroke="#8a9790" stroke-width="3">
+  <path d="M98 167 C98 151 120 149 126 164 C131 180 111 185 109 174 M137 144 C145 128 165 139 163 154 C161 167 144 167 144 157 M179 145 C190 132 208 146 203 160 C198 173 183 166 187 159 M219 163 C233 149 251 165 243 181 C237 192 223 185 227 178"/>
+  <path d="M111 201 C120 183 140 191 141 207 C140 222 123 225 121 214 M157 191 C167 177 186 190 182 205 C180 218 164 215 165 206 M201 202 C212 187 233 199 227 216 C224 227 209 224 211 215 M144 230 Q158 217 170 233 M185 235 Q199 221 211 237"/>
+ </g>
+ <path d="M104 157 Q112 152 118 159 M144 140 Q152 134 158 142 M186 142 Q195 140 201 147 M222 162 Q234 157 240 166 M117 197 Q126 189 134 198 M164 188 Q174 184 179 194" fill="none" stroke="#efecdf" stroke-width="2.7"/>
+</g></svg>

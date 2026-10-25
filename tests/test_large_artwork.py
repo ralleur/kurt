@@ -27,7 +27,7 @@ class LargeArtworkTests(unittest.TestCase):
         index = cell % large['cellsPerPage']
         x, y = index % large['columns'] * 512, index // large['columns'] * 512
         actual = sheet.crop((x,y,x+512,y+512))
-        canonical = json.loads((ROOT / '.build/artwork-512/animation-v12/manifest.json').read_text())
+        canonical = json.loads((ROOT / '.build/artwork-512/animation-v13/manifest.json').read_text())
         frame = canonical['frames'][next(s['first'] for s in canonical['sequences'] if s['id']=='walk-floor')]
         original = Image.open(ROOT / 'source/animation-v8/cels' / (frame['source']+'.png')).convert('RGBA')
         background = Image.new('RGBA', (512,512), '#eadfbc')

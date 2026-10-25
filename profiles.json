@@ -30,7 +30,9 @@
       "eat-floor",
       "vomit-floor",
       "poop-floor",
-      "turn-floor"
+      "turn-floor",
+      "spawn-floor",
+      "despawn-floor"
     ]
   },
   "website": {
@@ -62,7 +64,9 @@
       "wake-seat",
       "carry-lift",
       "carry-hang",
-      "carry-release"
+      "carry-release",
+      "spawn-floor",
+      "despawn-floor"
     ]
   },
   "kurtz-landing": {

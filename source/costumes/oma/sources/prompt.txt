@@ -1,0 +1,15 @@
+Built-in ImageGen, 24.10.2026. Use case: precise-object-edit.
+Selected output: painted-parts.png (1254 x 1254, RGBA).
+Input 1: references/neutral-master.png — approved drawing, style reference only.
+Input 2: layout-guide.png — exact costume-part arrangement, rendered from the
+Oma SVG layout sources. No Kurt drawing was generated or replaced.
+
+Prompt (verbatim):
+Use case: precise-object-edit. Asset type: production costume-part texture atlas for an existing hand-painted pug animation. Image 1 is STYLE REFERENCE ONLY: Kurt's approved drawing, warm variable brown ink, softly hand-painted shading. Do not draw or redesign the dog. Image 2 is the EDIT TARGET and exact 1024x1024 layout/silhouette registration guide. Improve ONLY these FOUR ISOLATED costume parts, on genuine transparent background, in exactly their current locations, sizes and quadrant boundaries. Upper left: front/left three-quarter grandmother silver-grey curly wig with small integrated bun. Upper right: rear view of same wig with a SHORT cropped curled nape. Lower left: FRONT WORK-COAT FABRIC PANEL; lower right: BACK FABRIC PANEL. These bottom panels intentionally extend as broad rectangular swatches at the top; preserve that extension and all current outer boundaries because the animation rig clips them to the dog's body. They are NOT human coats, no humanoid shape. Keep the location of the front buttons near panel x=266,y=350 relative to its 512 cell, pocket near x=350,y=350; back waist seam and small tie. Make the parts look genuinely painted in the same illustration medium as Image 1: warm nuanced dark brown contours, natural varied silver curls and soft hair-clump shadows instead of flat grey helmet shapes; softly shaded dusty muted cornflower-blue cotton, subtle irregular small faded pink florals, believable little stitched seams, cloth creases, curved sleeve/hem edges and gentle fabric-volume shading, no plastic gradients. Preserve clean animation-cutout contours, sufficient clarity at small display sizes. Restrained charming stereotypical grandma costume. Keep all spaces between parts transparent, no floor, no cast shadow behind the parts, no labels, no text, no face, no skin, no eyes, no ears, no animal body, no paws, no glasses, no extra props. Output only the four improved pieces in the exact source atlas arrangement.
+
+Registration:
+Only the four isolated costume pieces are cropped from the selected sheet.
+Their crop rectangles and 512px placements are explicit in catalog.json;
+transparent edges are preserved. The face, ears, pupils, muzzle, body and
+paws in the final animation remain the existing approved source pixels.
+Glasses and the small collar use the SVG sources for precise eye/neck fit.

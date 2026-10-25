@@ -65,3 +65,24 @@ with a license link; indicate changes to the artwork. The component displays
 the credit already. Custom renderers can put it in their footer or credits.
 
 Full details: https://github.com/ralleur/kurt/blob/main/LICENSE.md.
+
+## Costumes
+
+```html
+<kurt-companion costume="oma"></kurt-companion>
+```
+
+`oma` adds a grey curly wig and bun, thick glasses and a floral work coat.
+Change `element.costume = 'oma'` or `element.costume = ''` at any time;
+an empty value restores the original Kurt. The animation keeps its current
+pose, clock and direction. Costume images load only when selected and switch
+as a complete set. If loading fails, the previous appearance stays visible
+and the element emits `kurt-error`. `kurt-costume-change` confirms a completed
+switch with `event.detail.costume`. The option also works while paused or
+with reduced motion.
+
+Custom renderers use `atlas.costumes.oma.pages` in place of `atlas.pages`.
+Every costume uses the same cells, page sizes, anchors and animation data;
+there is no second behavior engine. Preload/decode the chosen pages before
+switching them together. `atlas.costumes.oma.still` is the matching poster.
+The optional 512px atlas includes the same costumes.

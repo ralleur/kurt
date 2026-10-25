@@ -35,6 +35,7 @@ final class KurtSpriteView: UIView {
     private var drops: [String: CGImage] = [:]
     private let shadow = CAShapeLayer()
     private var pages: [Int: CGImage] = [:]
+    private(set) var costume: String?
     private var root: URL?
     private var manifest: KurtAtlasManifest?
     private var displayLink: CADisplayLink?
@@ -226,6 +227,23 @@ final class KurtSpriteView: UIView {
         seek(0)
         return actor.contents != nil
     }
+    /// Swap only the textures; the clock, current pose and event markers stay put.
+    @discardableResult func setCostume(_ id: String?) -> Bool {
+        guard let manifest, let root else { return false }
+        let id = id.flatMap { $0.isEmpty ? nil : $0 }
+        let names: [String]
+        if let id {
+            guard let definition = manifest.costumes?[id], definition.pages.count == manifest.pages.count else { return false }
+            names = definition.pages
+        } else { names = manifest.pages }
+        guard names.allSatisfy({ FileManager.default.fileExists(atPath: root.appendingPathComponent($0).path) }),
+              let frame = currentFrame,
+              let image = UIImage(contentsOfFile: root.appendingPathComponent(names[frame.page]).path)?.cgImage else { return false }
+        costume = id
+        pages = [frame.page: image]
+        drawFrame()
+        return true
+    }
     func unload() {
         contactGesture.isEnabled = false; contactGesture.isEnabled = true
         endCarrying()
@@ -236,6 +254,7 @@ final class KurtSpriteView: UIView {
         placement = nil
         motionFrames = nil
         pages.removeAll()
+        costume = nil
         actor.contents = nil
         fallingWaste.contents = nil; drops.removeAll()
         shadow.path = nil
@@ -357,7 +376,8 @@ final class KurtSpriteView: UIView {
         if pages[frame.page] == nil {
             // At most two decoded pages even as the clip library grows.
             if pages.count >= 2 { pages.removeAll() }
-            pages[frame.page] = UIImage(contentsOfFile: root.appendingPathComponent(manifest.pages[frame.page]).path)?.cgImage
+            let names = costume.flatMap { manifest.costumes?[$0]?.pages } ?? manifest.pages
+            pages[frame.page] = UIImage(contentsOfFile: root.appendingPathComponent(names[frame.page]).path)?.cgImage
         }
         let foot = projection.position(.init(x: frame.x, y: frame.y - frame.lift))
         let contact = projection.position(.init(x: frame.x, y: frame.y))

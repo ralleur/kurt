@@ -1,0 +1,59 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kurt · Kostümprobe</title>
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color:#283936;background:#ede9df}body{max-width:1160px;margin:40px auto;padding:0 24px}h1{font-size:40px;letter-spacing:-.04em;margin-bottom:6px}p{max-width:760px}label,button{font:inherit}nav{display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:20px 0}select,button,input{font:inherit}button,select{padding:8px 12px;border:1px solid #93a39b;border-radius:8px;background:#fff9ed;color:#283936}button{cursor:pointer}.stage{display:flex;flex-wrap:wrap;gap:12px;align-items:end;background:#faf5e9;border:1px solid #cdc8bb;border-radius:16px;padding:24px;overflow:auto}.stage.dark{background:#253237}figure{margin:0;text-align:center}figcaption{padding:8px;color:#697d76}.dark figcaption{color:#d2ddd4}canvas{display:block;max-width:100%;height:auto}img{width:256px;max-width:100%}#timeline{width:min(550px,100%)}a{color:inherit}output{font-variant-numeric:tabular-nums}small{display:block;margin-top:16px}
+</style>
+<h1>Kurt · Kostümprobe</h1>
+<p>Dieselben Zeichnungen und Bewegungen, mit und ohne Oma-Kostüm. Die freigegebene neutrale Referenz steht zum Vergleich daneben.</p>
+<nav>
+ <label>Aktion <select id="action"></select></label>
+ <button id="play">Pause</button><button id="step">Einzelbild +</button>
+ <label>Größe <select id="size"><option>128</option><option selected>256</option><option>512</option></select></label>
+ <label><input id="mirror" type="checkbox"> Spiegeln</label>
+ <label><input id="dark" type="checkbox"> Dunkel</label>
+ <label>Tempo <select id="speed"><option value="1">Normal</option><option value=".5">Halb</option></select></label>
+</nav>
+<div class="stage" id="stage">
+ <figure><canvas id="base" width="256" height="256"></canvas><figcaption>Original</figcaption></figure>
+ <figure><canvas id="dressed" width="256" height="256"></canvas><figcaption>Oma · Perücke, Brille, Kittel</figcaption></figure>
+ <figure><img src="../../references/neutral-master.png" alt="Freigegebener neutraler Kurt"><figcaption>Neutrale Referenz</figcaption></figure>
+</div>
+<nav><input id="timeline" type="range" min="0" value="0"><output id="position"></output></nav>
+<p id="status" role="status">Atlas wird geladen …</p>
+<small>Kurt by Ralleur · Zeichnungen/Animationsdaten <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Vorschau: AGPL-3.0-only.</small>
+<script type="module">
+const $=id=>document.getElementById(id),root=new URL('../../.build/exports/hauser/assets/',location.href);
+try {
+ const response=await fetch(new URL('manifest.json',root));if(!response.ok)throw Error('Bitte zuerst npm run export ausführen.');
+ const atlas=await response.json(),costume=atlas.costumes.oma,cache=new Map();
+ let sequence,offset=0,elapsed=0,playing=!matchMedia('(prefers-reduced-motion: reduce)').matches,revision=0,last;
+ for(const clip of atlas.sequences.filter(s=>s.id!=='study'))$('action').add(new Option(clip.label+' · '+clip.id,clip.id));
+ function updateButton(){$('play').textContent=playing?'Pause':'Abspielen'}
+ async function page(name){if(!cache.has(name)){while(cache.size>=4)cache.delete(cache.keys().next().value);const img=new Image();img.src=new URL(name,root);cache.set(name,img.decode().then(()=>img))}return cache.get(name)}
+ async function draw(){
+  const token=++revision,frame=atlas.frames[sequence.first+offset],size=Number($('size').value);
+  $('timeline').value=offset;$('position').value=`${offset+1} / ${sequence.count} · ${(offset/atlas.fps).toFixed(2)} s`;
+  const full=size===512,cell=full?512:atlas.cell;
+  const names=full?[new URL('../../.build/artwork-512/animation-v13/'+atlas.pages[frame.page],location.href).href,new URL('../../.build/costumes/512/oma/animation-v13/'+atlas.pages[frame.page],location.href).href]:[atlas.pages[frame.page],costume.pages[frame.page]];
+  const images=await Promise.all(names.map(page));if(token!==revision)return;
+  for(const [i,id]of ['base','dressed'].entries()){
+   const canvas=$(id);canvas.width=size;canvas.height=size;const ctx=canvas.getContext('2d');
+   // Source turns already contain their drawing-side flip. Mirror the entire
+   // exported cel exactly as the consumer does, in both comparison panels.
+   if($('mirror').checked){ctx.translate(size,0);ctx.scale(-1,1)}
+   ctx.drawImage(images[i],frame.column*cell,frame.row*cell,cell,cell,0,0,size,size);
+  }
+ }
+ function choose(){sequence=atlas.sequences.find(s=>s.id===$('action').value);offset=0;elapsed=0;$('timeline').max=sequence.count-1;void draw()}
+ $('action').value='walk-floor';$('action').onchange=choose;choose();
+ $('play').onclick=()=>{playing=!playing;updateButton()};updateButton();
+ $('step').onclick=()=>{playing=false;updateButton();offset=(offset+1)%sequence.count;elapsed=offset/atlas.fps;void draw()};
+ $('timeline').oninput=()=>{playing=false;updateButton();offset=Number($('timeline').value);elapsed=offset/atlas.fps;void draw()};
+ for(const id of ['mirror','size'])$(id).onchange=()=>void draw();
+ $('dark').onchange=()=>$('stage').classList.toggle('dark',$('dark').checked);
+ $('status').textContent=`${atlas.frames.length} gemeinsame Frames · ${atlas.fps} fps · Kostümwechsel benötigt keine neue Animation.`;
+ function tick(now){if(last!==undefined&&playing&&!document.hidden){elapsed+=Math.min(.1,(now-last)/1000)*Number($('speed').value);const next=Math.floor(elapsed*atlas.fps)%sequence.count;if(next!==offset){offset=next;void draw()}}last=now;requestAnimationFrame(tick)}requestAnimationFrame(tick);
+}catch(error){$('status').textContent=error.message}
+</script></html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<html lang="de">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kurt · Zauberwolke</title>
+<style>
+  :root { font:16px/1.5 system-ui,sans-serif; color:#392f28; background:#f6f2ea; }
+  body { margin:24px auto; padding:0 24px; max-width:1200px; }
+  h1 { margin-bottom:8px; font-size:28px; }
+  p { max-width:850px; }
+  nav { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin:24px 0; }
+  button,select { font:inherit; color:inherit; padding:6px 12px; }
+  input[type=range] { width:240px; }
+  main { display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; }
+  figure { margin:0; padding:16px; background:#e6dfd2; border-radius:16px; }
+  figcaption { margin-bottom:8px; font-size:14px; }
+  canvas { display:block; }
+  .dark figure { background:#252931; color:#f8f0e3; }
+  aside { margin:24px 0; display:flex; gap:24px; align-items:center; }
+  aside img { width:128px; height:128px; object-fit:contain; background:#e6dfd2; border-radius:12px; }
+  small { opacity:.75; }
+</style>
+<h1>Kurt · Zauberwolke</h1>
+<p>Einmal gezeichnet, in zwei Richtungen gespielt. Nur die Wolke verändert ihre Größe.
+  Jeder Clip dauert 1,25 Sekunden; Kurt behält seine Originalpose.</p>
+<nav>
+  <button id="play">Pause</button>
+  <select id="clip" aria-label="Animation">
+    <option value="both">Despawn → Spawn</option>
+    <option value="despawn-floor">Wegzaubern</option>
+    <option value="spawn-floor">Herbeizaubern</option>
+  </select>
+  <label><input type="checkbox" id="dark"> Dunkler Hintergrund</label>
+  <label><input type="checkbox" id="mirror"> Spiegeln</label>
+  <label>Bild <input id="frame" type="range" min="0" max="14" value="0"></label>
+  <output id="status" aria-live="off"></output>
+</nav>
+<main></main>
+<aside><img src="../../references/neutral-master.png" alt="Freigegebener neutraler Kurt">
+  <div>Freigegebene Referenz<br><small>Kurt by Ralleur · Artwork CC BY 4.0 · Vorschau AGPL-3.0-only</small></div>
+</aside>
+<script type="module">
+const $ = id => document.getElementById(id);
+const views = [];
+for (const [size, base, canonical] of [
+  [128, '../../.build/exports/website/assets/', false],
+  [256, '../../assets/', true],
+  [512, '../../.build/exports/website/assets/large/', false]
+]) {
+  const atlas = await fetch(base + 'manifest.json').then(r => r.json());
+  const pages = await Promise.all(atlas.pages.map(file => new Promise((resolve, reject) => {
+    const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = base + file;
+  })));
+  const figure = document.createElement('figure');
+  figure.innerHTML = `<figcaption>${size} px · ${canonical ? 'kanonischer Atlas' : 'Website-Export'}</figcaption><canvas width="${size}" height="${size}" aria-label="Kurt Zauberanimation bei ${size} Pixeln"></canvas>`;
+  document.querySelector('main').append(figure);
+  views.push({atlas, pages, canonical, canvas: figure.querySelector('canvas')});
+}
+let playing = !matchMedia('(prefers-reduced-motion:reduce)').matches;
+let elapsed = 0, previous = performance.now(), id = 'despawn-floor', frame = 0;
+function draw() {
+  for (const {atlas, pages, canonical, canvas} of views) {
+    const ctx = canvas.getContext('2d'), size = canvas.width;
+    let page, column, row;
+    if (canonical) {
+      const seq = atlas.sequences.find(s => s.id === id);
+      ({page, column, row} = atlas.frames[seq.first + frame]);
+    } else {
+      const cell = atlas.sequences[id].frames[frame].cell;
+      page = Math.floor(cell / atlas.cellsPerPage);
+      const local = cell % atlas.cellsPerPage;
+      column = local % atlas.columns; row = Math.floor(local / atlas.columns);
+    }
+    ctx.clearRect(0, 0, size, size); ctx.save();
+    if ($('mirror').checked) { ctx.translate(size, 0); ctx.scale(-1, 1); }
+    ctx.drawImage(pages[page], column * atlas.cell, row * atlas.cell, atlas.cell, atlas.cell, 0, 0, size, size);
+    ctx.restore();
+  }
+  $('frame').value = frame;
+  $('status').textContent = `${id === 'spawn-floor' ? 'Herbeizaubern' : 'Wegzaubern'} · ${frame + 1}/15`;
+  $('play').textContent = playing ? 'Pause' : 'Abspielen';
+}
+$('play').onclick = () => { playing = !playing; draw(); };
+$('clip').onchange = () => { id = $('clip').value === 'both' ? 'despawn-floor' : $('clip').value; elapsed = 0; frame = 0; draw(); };
+$('dark').onchange = () => document.body.classList.toggle('dark', $('dark').checked);
+$('mirror').onchange = draw;
+$('frame').oninput = () => { playing = false; frame = Number($('frame').value); elapsed = frame / 12; draw(); };
+function tick() {
+  const time = performance.now();
+  if (playing && !document.hidden) {
+    elapsed += Math.min(.1, (time - previous) / 1000);
+    if (elapsed >= 1.25 + .7) {
+      elapsed %= 1.95;
+      if ($('clip').value === 'both') id = id === 'spawn-floor' ? 'despawn-floor' : 'spawn-floor';
+    }
+    const next = Math.min(14, Math.floor(elapsed * 12));
+    if (frame !== next) { frame = next; draw(); }
+  }
+  previous = time;
+  requestAnimationFrame(tick);
+}
+draw(); requestAnimationFrame(tick);
+</script>
+</html>

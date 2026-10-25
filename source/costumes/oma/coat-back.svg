@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<!-- SPDX-License-Identifier: CC-BY-4.0; Kurt by Ralleur. Short-sleeved floral work coat. -->
+<defs>
+ <linearGradient id="cloth" x1=".15" y1="0" x2=".7" y2="1"><stop stop-color="#a9c0c5"/><stop offset=".48" stop-color="#92adb7"/><stop offset="1" stop-color="#718f9e"/></linearGradient>
+ <linearGradient id="fold" x1="0" x2="1"><stop stop-color="#516e7e" stop-opacity=".05"/><stop offset=".62" stop-color="#516e7e" stop-opacity=".35"/><stop offset="1" stop-color="#516e7e" stop-opacity="0"/></linearGradient>
+ <pattern id="flowers" width="74" height="67" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
+  <g stroke-linecap="round" stroke-linejoin="round">
+   <path d="M18 25 Q17 35 28 39 M25 33 Q30 24 34 27 Q35 33 25 33 M24 35 Q15 32 14 36 Q17 42 24 35" fill="#647f7d" stroke="#647f7d" stroke-width="1.2"/>
+   <path d="M17 22 C8 14 13 9 19 14 C21 4 28 8 26 17 C36 13 37 22 28 24 C33 32 24 36 21 27 C15 34 9 27 17 22Z" fill="#c8a8ab"/>
+   <path d="M17 18 Q14 14 18 14 M27 21 Q31 18 32 21 M20 28 Q17 30 16 26" fill="none" stroke="#e0c4bf" stroke-width="1.5"/>
+   <circle cx="22" cy="22" r="3.2" fill="#eee0bb"/>
+   <path d="M53 50 Q49 57 59 60 M55 56 Q60 49 63 52 Q60 57 55 56" fill="#647f7d" stroke="#647f7d" stroke-width="1.2"/>
+   <path d="M50 47 C43 43 48 38 53 43 C54 35 61 39 58 45 C66 43 66 50 59 51 C62 57 55 59 53 53 C47 57 44 50 50 47Z" fill="#d3b5b6"/>
+   <circle cx="54" cy="48" r="2.7" fill="#eee0bb"/>
+  </g>
+ </pattern>
+ <path id="garment" d="M54 30 H510 V368 Q489 387 461 390 Q434 393 410 381 Q399 375 391 383 Q350 406 295 396 L278 395 Q276 404 265 407 Q239 411 214 397 L207 378 Q174 392 138 372 Q114 358 99 335 Z"/>
+ <clipPath id="shape"><use href="#garment"/></clipPath>
+</defs>
+<g clip-path="url(#shape)" stroke-linecap="round" stroke-linejoin="round">
+ <use href="#garment" fill="url(#cloth)"/>
+ <use href="#garment" fill="url(#flowers)"/>
+ <path d="M281 251 Q295 307 281 389 M121 347 Q291 381 470 352" fill="none" stroke="#657f8a" stroke-width="2.5"/>
+ <path d="M274 355 Q265 344 251 347 L263 361 L244 379 M275 356 Q288 341 300 347 L285 362 L300 378" fill="#9db5bc" stroke="#596e75" stroke-width="2.3"/>
+ <path d="M215 393 Q240 405 271 399 M299 390 Q351 401 387 380 M413 381 Q440 390 465 383 M141 365 Q170 383 197 375" fill="none" stroke="#4f646c" stroke-width="3.2"/>
+ <path d="M217 388 Q240 398 267 394 M301 385 Q348 395 380 377" fill="none" stroke="#bacaca" stroke-width="2"/>
+</g></svg>

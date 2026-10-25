@@ -26,6 +26,10 @@ also exposes feeding and carrying for custom integrations.
 commercial sites. Keep the software notice and credit the artwork; indicate
 artwork changes. See [licenses](LICENSE.md) and [attribution](ATTRIBUTION.md).
 
+Optional: `<kurt-companion costume="oma"></kurt-companion>` dresses Kurt in
+an Oma wig, thick glasses and a floral work coat. Change or remove the
+`costume` attribute while he moves; all existing animations are reused.
+
 ## Customize or contribute
 
 - [Website setup and API](docs/website.md)
@@ -33,7 +37,8 @@ artwork changes. See [licenses](LICENSE.md) and [attribution](ATTRIBUTION.md).
 - `runtime/web/`: shared motion, behavior and the drop-in Web component.
 - `runtime/ios/`: native motion, room geometry, digestion and renderer.
 - `source/`: registered drawings and the reproducible animation build.
-- `assets/`: the approved `kurt-a-refined-12` atlas: 27 pages and 2,324 frames
+- `assets/`: the approved Kurt drawings plus the reversible magic cloud in
+  `kurt-a-refined-13`: 28 pages and 2,354 frames
   including held and repeated drawings.
 - `references/`: approved casting A and neutral body reference.
 

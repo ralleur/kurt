@@ -18,6 +18,8 @@
             this.timer = 0;
             this.lastTime = null;
             this.lastFrame = '';
+            this.costume = '';
+            this.costumeRequest = 0;
             this.button.addEventListener('click', () => { this.paused = !this.paused; this.sync(); });
             this.motion.addEventListener('change', () => { this.waking = false; this.sync(); this.draw(); });
             document.addEventListener('visibilitychange', () => this.sync());
@@ -49,6 +51,32 @@
                 this.figure.dataset.animation = 'unavailable';
                 this.button.hidden = true;
             }
+        }
+        async setCostume(id = '') {
+            const request = ++this.costumeRequest;
+            const definition = id ? this.assets?.costumes?.[id] : null;
+            if (!this.assets || (id && !definition)) return false;
+            try {
+                if (definition) {
+                    const loaded = await Promise.all(definition.pages.map(name => {
+                        if (this.images[name]) return [name, this.images[name]];
+                        return new Promise((resolve, reject) => {
+                            const image = new Image();
+                            const timeout = setTimeout(() => reject(new Error('Kurt costume timeout')), 10000);
+                            image.onload = () => { clearTimeout(timeout); resolve([name, image]); };
+                            image.onerror = () => { clearTimeout(timeout); reject(new Error('Kurt costume unavailable')); };
+                            image.src = 'kurt/' + name;
+                        });
+                    }));
+                    if (request !== this.costumeRequest) return false;
+                    Object.assign(this.images, Object.fromEntries(loaded));
+                }
+                if (request !== this.costumeRequest) return false;
+                this.costume = id;
+                this.lastFrame = '';
+                this.draw();
+                return true;
+            } catch { return false; }
         }
         setVisible(visible) {
             this.visible = visible;
@@ -119,7 +147,7 @@
         draw() {
             if (!this.assets || !this.visible) return;
             const pose = this.sample();
-            const key = [pose.id, pose.index, pose.x, pose.facing].join(':');
+            const key = [this.costume, pose.id, pose.index, pose.x, pose.facing].join(':');
             if (key === this.lastFrame) return;
             this.lastFrame = key;
             const a = this.assets, clip = a.clips[pose.id], frame = clip.frames[pose.index];
@@ -131,7 +159,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, .22)';
             ctx.beginPath(); ctx.ellipse(pose.x, y, width * .36, 6, 0, 0, 2 * Math.PI); ctx.fill();
             ctx.save(); ctx.translate(pose.x, y - (frame.liftInBodies || 0) * width); ctx.scale(pose.facing, 1);
-            ctx.drawImage(this.images[a.pages[page]], column * a.cell, row * a.cell, a.cell, a.cell, -a.anchor.x * size, -a.anchor.y * size, size, size);
+            ctx.drawImage(this.images[(this.costume ? a.costumes[this.costume].pages : a.pages)[page]], column * a.cell, row * a.cell, a.cell, a.cell, -a.anchor.x * size, -a.anchor.y * size, size, size);
             ctx.restore();
             if (frame.falling) {
                 const f = frame.falling;

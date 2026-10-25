@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<!-- SPDX-License-Identifier: CC-BY-4.0; Kurt by Ralleur. Clear cat-eye horn-rim glasses; no painted lenses over pupils. -->
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M99 209 L91 198 M224 233 Q242 225 261 217" stroke="#514139" stroke-width="6"/>
+ <path d="M141 226 Q150 218 159 231" stroke="#514139" stroke-width="5.5"/>
+ <path d="M96 198 Q115 186 137 199 Q148 214 141 234 Q134 249 117 245 Q99 242 96 224 Q92 209 96 198Z" stroke="#514139" stroke-width="6.6"/>
+ <path d="M160 215 Q190 201 225 218 Q231 242 219 261 Q206 277 184 271 Q161 265 158 244 Q155 230 160 215Z" stroke="#514139" stroke-width="7"/>
+ <path d="M99 198 Q117 189 134 199 M164 215 Q188 206 220 218" stroke="#9a776a" stroke-width="2.1"/>
+ <path d="M142 225 Q149 221 155 227" stroke="#d1b093" stroke-width="2"/>
+</g></svg>

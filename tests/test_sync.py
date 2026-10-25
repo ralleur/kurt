@@ -65,3 +65,14 @@ class SyncTests(unittest.TestCase):
             (root / name).write_bytes(b'local artwork edit')
             with self.assertRaisesRegex(ValueError, 'nothing overwritten'):
                 prepare('website', root, 'new-revision')
+
+    def test_costume_pages_are_pinned_and_local_changes_stop_sync(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            install(prepare('mutti', root, 'costume-revision'))
+            lock = json.loads((root / 'kurt.lock.json').read_text())
+            name = 'mutti/migrate/web/kurt/costumes/oma/atlas-0.webp'
+            self.assertIn(name, lock['files'])
+            (root / name).write_bytes(b'local costume drawing')
+            with self.assertRaisesRegex(ValueError, 'nothing overwritten'):
+                prepare('mutti', root, 'next-revision')

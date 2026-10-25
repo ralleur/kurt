@@ -17,6 +17,7 @@
 <body>
   <h1>A little company.<br>Meet Kurt.</h1>
   <p>A hand-drawn pug for your website. He wanders, watches and takes his time.</p>
+  <label>Outfit <select id="outfit"><option value="">Original Kurt</option><option value="oma">Oma · wig, glasses &amp; work coat</option></select></label>
   <kurt-companion></kurt-companion>
   <p>Copy the <code>kurt/</code> folder to your website and add:</p>
   <pre>&lt;script type="module" src="/kurt/kurt-element.mjs"&gt;&lt;/script&gt;
@@ -25,5 +26,10 @@
     It stops when the tab or element is hidden. No tracking, cookies or external runtime services.</p>
   <p>Web code: AGPL-3.0-only. Artwork: CC BY 4.0. Credit is included below Kurt.
     <a href="https://github.com/ralleur/kurt">Source and customization</a>.</p>
+<script type="module">
+    document.querySelector('#outfit').addEventListener('change', event => {
+      document.querySelector('kurt-companion').costume = event.target.value;
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<!-- SPDX-License-Identifier: CC-BY-4.0; Kurt by Ralleur. Soft grey curls with a small pinned bun. -->
+<defs>
+ <linearGradient id="silver" x1=".2" y1="0" x2=".7" y2="1"><stop stop-color="#e4e1d7"/><stop offset=".43" stop-color="#c3c5bd"/><stop offset="1" stop-color="#8e9693"/></linearGradient>
+ <radialGradient id="roll" cx=".33" cy=".25" r=".8"><stop stop-color="#d9d9cf"/><stop offset=".65" stop-color="#afb6af"/><stop offset="1" stop-color="#87918d"/></radialGradient>
+</defs>
+<g stroke-linecap="round" stroke-linejoin="round">
+ <path d="M218 135 C208 122 214 106 225 103 C233 90 250 92 257 103 C272 103 280 117 275 131 C278 144 266 156 254 153 C242 163 223 151 218 135Z" fill="url(#roll)" stroke="#645b50" stroke-width="3.8"/>
+ <path d="M226 118 C235 104 258 107 263 120 C270 135 255 148 242 140 C231 133 240 119 250 124 C256 128 252 135 247 134" fill="none" stroke="#84918b" stroke-width="3.2"/>
+ <path d="M230 110 Q239 103 248 108 M261 137 Q270 131 267 121" fill="none" stroke="#ece9de" stroke-width="2.6"/>
+ <path d="M84 184 C76 173 81 158 94 154 C92 138 108 125 122 130 C132 114 153 115 164 123 C180 111 199 119 204 130 C223 124 240 136 239 149 C257 151 266 166 260 181 C270 194 261 208 251 211 C241 203 244 188 229 181 C222 192 209 190 204 182 C193 190 181 187 179 177 C168 186 155 182 153 174 C145 185 130 186 123 176 C115 189 101 191 94 181 C92 184 89 188 84 184Z" fill="url(#silver)" stroke="#645b50" stroke-width="3.8"/>
+ <path d="M87 166 C87 155 104 148 113 159 C121 171 108 180 101 172 M105 142 C110 130 125 132 130 142 C137 156 122 164 117 154 M139 132 C148 119 163 129 163 140 C163 152 148 154 146 146 M175 133 C185 122 200 135 196 147 C193 156 181 156 179 148 M208 145 C221 134 234 147 229 158 C225 169 213 166 214 158 M242 163 C255 162 260 178 250 184" fill="none" stroke="#8a9790" stroke-width="3.2"/>
+ <path d="M92 160 Q99 153 106 158 M112 139 Q120 133 126 140 M144 129 Q151 124 158 132 M180 131 Q188 127 193 135 M214 143 Q222 140 227 147" fill="none" stroke="#f0ede2" stroke-width="3.1"/>
+ <path d="M113 178 Q123 168 133 175 M154 170 Q163 164 171 172 M185 171 Q195 168 202 177 M222 177 Q232 173 240 188" fill="none" stroke="#9ca69f" stroke-width="2.5"/>
+</g></svg>

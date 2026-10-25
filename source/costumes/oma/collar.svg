@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<!-- SPDX-License-Identifier: CC-BY-4.0; Kurt by Ralleur. Small folded collar attached to the neck. -->
+<defs><linearGradient id="collar" x2=".4" y2="1"><stop stop-color="#e1e4d8"/><stop offset="1" stop-color="#bac8c5"/></linearGradient></defs>
+<g stroke="#596a6d" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M147 318 Q174 334 214 321 L246 332 L228 353 Q196 351 165 337 Z" fill="url(#collar)"/>
+ <path d="M254 310 L247 333 L267 346 L283 315" fill="url(#collar)"/>
+ <path d="M169 331 Q197 346 224 346 M261 319 L257 333 L266 339" fill="none" stroke="#edf0e4" stroke-width="1.6"/>
+</g></svg>

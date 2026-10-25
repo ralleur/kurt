@@ -104,3 +104,16 @@ test('every referenced local image exists and every atlas location is valid', ()
         assert.ok(Number.isInteger(frame.tile) && frame.tile >= 0 && frame.tile < assets.pages.length * 64);
     }
 });
+test('costumes change during playback or pause without resetting progress', async () => {
+    const f = fixture(); f.step(5); f.advance(500);
+    const elapsed = f.animator.elapsed, pose = f.animator.sample();
+    for (const name of assets.costumes.oma.pages) f.animator.images[name] = {width: 128, height: 128};
+    assert.equal(await f.animator.setCostume('oma'), true);
+    assert.equal(f.animator.elapsed, elapsed);
+    assert.deepEqual(f.animator.sample(), pose);
+    f.events.click();
+    assert.equal(await f.animator.setCostume(''), true);
+    assert.equal(f.animator.elapsed, elapsed);
+    assert.equal(await f.animator.setCostume('unknown'), false);
+    assert.equal(f.animator.costume, '');
+});

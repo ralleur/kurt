@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import sharp from 'sharp';
-import {cell, atlasDirectory} from '../shared/build-profile.mjs';
+import {readDrawing} from '../costumes/dress.mjs';
+import {cell, atlasDirectory, costume} from '../shared/build-profile.mjs';
 import {mkdir,readFile,writeFile,copyFile} from 'node:fs/promises';
 import {repertoire,study,FPS,GROUND,ANCHOR,BODY_WIDTH,VERSION} from './clips.mjs';
 const dir=new URL('.',import.meta.url).pathname,out=atlasDirectory('animation-v8');
@@ -10,7 +11,7 @@ const columns=8,perPage=64,side=cell*columns;
 const frames=[],images=[],sequences=[],cache=new Map();
 async function imageFor(f){
  const key=JSON.stringify([f.source,!!f.flip,f.breath??0]);if(cache.has(key))return cache.get(key);
- let png=await sharp(dir+`cels/${f.source}.png`).png().toBuffer();
+ let png=await sharp(await readDrawing(f.source,dir+`cels/${f.source}.png`)).png().toBuffer();
  if(f.breath){
   const scale=1+f.breath,h=Math.round(512*scale),dy=Math.round(GROUND*(1-scale)),y=Math.max(0,dy),crop=Math.max(0,-dy);
   const resized=await sharp(png).resize(512,h).extract({left:0,top:crop,width:512,height:Math.min(h-crop,512-y)}).png().toBuffer();
@@ -53,5 +54,5 @@ await writeFile(out+'manifest.json',JSON.stringify(manifest,null,2)+'\n');
 await copyFile(new URL('../shared/room-map.json',import.meta.url),out+'room-map.json');
 for(const kind of ['poop','vomit','poop-drop','vomit-drop'])await copyFile(new URL(`../shared/${kind}.png`,import.meta.url),out+kind+'.png');
 const roomMap=JSON.parse(await readFile(out+'room-map.json','utf8'));
-await writeFile(dir+'atlas-inline.js','window.KURT_ATLAS='+JSON.stringify(manifest)+';\nwindow.KURT_MAP='+JSON.stringify(roomMap)+';\n');
+if (!costume) await writeFile(dir+'atlas-inline.js','window.KURT_ATLAS='+JSON.stringify(manifest)+';\nwindow.KURT_MAP='+JSON.stringify(roomMap)+';\n');
 console.log(JSON.stringify({version:VERSION,frames:frames.length,actions:repertoire.length,pages:pages.length,distinctTextures:cache.size}));

@@ -4,8 +4,8 @@ Kurt ist der Mops von Ralleur. Hier liegen seine verbindlichen Zeichnungen,
 Animationen und wiederverwendbaren Web- und iOS-Kerne. Hauser, der Mutti-
 Installer und die Ralleur-Website beziehen ihren Kurt aus diesem Repository.
 
-Zeichnungsstand: die freigegebene Fassung **kurt-a-refined-12** mit
-27 Atlas-Seiten, 2.324 Frames einschließlich Haltebildern und Wiederholungen.
+Zeichnungsstand: **kurt-a-refined-13** mit der freigegebenen Figur und neuer
+Zauberwolke, 28 Atlas-Seiten und 2.354 Frames einschließlich Haltebildern und Wiederholungen.
 Die ursprünglichen Zeichnungen bleiben unverändert.
 
 Offene Wünsche stehen im [Backlog](backlog.md).
@@ -14,7 +14,7 @@ Offene Wünsche stehen im [Backlog](backlog.md).
 
 - `references/`: Casting A, die freigegebene Idle-Referenz und der neutrale Master.
 - `source/`: registrierte Zeichnungen und die tatsächlich benötigte Baukette
-  v8 → v9 → v10 → v12. Die Nummern dokumentieren Zeichnungsschritte, keine
+  v8 → v9 → v10 → v12 → v13. Die Nummern dokumentieren Zeichnungsschritte, keine
   getrennten Produktimplementierungen. Alte Studien und Videos bleiben im
   historischen Hauser-Labor; sie sind keine aktive Quelle mehr.
 - `assets/`: vollständiger kanonischer Atlas, Ereignisse und Effektzeichnungen.
@@ -81,6 +81,26 @@ Aufbereitung festhalten. Bestehende Angaben erhalten; fehlende historische
 Details nicht nachträglich erfinden. Generierte Atlanten und Vergleichsbilder
 bleiben Build-Ergebnisse. Für neue Clips sind keine zusätzliche Pipeline,
 Variantenarchive oder getrennte Review-Phase nötig.
+
+### Herbei- und Wegzaubern
+
+`source/animation-v13/build-magic.mjs` ergänzt `spawn-floor` und
+`despawn-floor` (je 15 Bilder bei 12 fps, 1,25 s). Beide benutzen dieselben
+Zellen in umgekehrter Reihenfolge: schneller Wolkenstoß vor Kurt, vollständig
+verdeckter Wechsel, Zusammenziehen zum Punkt und ein transparentes Ende.
+Kurts unveränderte Zeichnung ist `source/animation-v8/cels/base/stand.png`;
+die separate, als SVG gezeichnete helle Wolke liegt in `cloud.svg`.
+Es wurde kein neues Kurt-Bild generiert. Nur die Wolke wird skaliert, Kurt
+bleibt an seinem Pfotenkontakt. Die Clips sind einmalig abzuspielen; beim
+Spawn anschließend in eine Stand-/Idle-Pose wechseln, beim Despawn erst nach
+Clipende entfernen. Das Auslösen bleibt Aufgabe des jeweiligen Verbrauchers.
+
+Nach `npm run artwork` und `npm test` zeigt
+`source/animation-v13/preview.html` über einen lokalen HTTP-Server die
+tatsächlich exportierten Clips in 128, 256 und 512 px. Pause, Einzelbilder,
+Spiegelung und heller/dunkler Hintergrund erlauben den direkten Vergleich
+mit dem neutralen Master. Die Clips sind in Hauser, Mutti und beiden
+Website-Auflösungen enthalten.
 
 ### Szenen für kurtz.app
 
@@ -157,8 +177,8 @@ kein zusätzlicher Dienst und kein Zugriff auf echte Haushalte nötig.
 | Profil | Gemeinsamer Stand | Produktseitige Anbindung |
 | --- | --- | --- |
 | `hauser` | vollständiger Atlas, fünf Swift-Dateien | Hauser iOS, Raum- und Sitzflächen, versteckte Aktivierung |
-| `mutti` | zehn Clips mit Originalauflösung, Installer-Player | lokaler Importfortschritt, Mac und Docker nutzen dieselbe Weboberfläche |
-| `website` | neunzehn Clips mit 128px-Zellen, zwei Web-Module | Ralleur-Webseite, DOM-Flächen und Zeigerbedienung |
+| `mutti` | zwölf Clips mit Originalauflösung, Installer-Player | lokaler Importfortschritt, Mac und Docker nutzen dieselbe Weboberfläche |
+| `website` | einundzwanzig Clips mit 128px-Zellen, zwei Web-Module | Ralleur-Webseite, DOM-Flächen und Zeigerbedienung |
 
 Andere Projekte können ein Profil ergänzen und dieselben Quellen beziehen.
 Hausers Web-App erhält durch diese Extraktion keine Kurt-Funktion.
@@ -174,8 +194,8 @@ Siehe [LICENSE.md](../LICENSE.md).
 in einen separaten Atlas unter `.build/artwork-512/`. Der kanonische 256px-Atlas
 für bestehende Verbraucher bleibt unverändert. `tools/export.py` baut diese
 Variante bei veränderten Quellprüfsummen automatisch neu. Das Website-Profil
-enthält zusätzlich `large/` mit 512px-Zellen und den dreizehn Bewegungs- und
-Trageclips des großen Exponats. Die 128px-Dateien bleiben bytegleich.
+enthält zusätzlich `large/` mit 512px-Zellen und denselben Bewegungs-,
+Trage- und Zauberclips. Die 128px-Variante wird unabhängig gepackt.
 Der rekursive Sync nimmt beide Größen in denselben geprüften Lock auf.
 Die Website lädt und dekodiert die großen Seiten bedarfsgerecht; der kleine
 Kurt verwendet weiterhin ausschließlich den kompakten Atlas.
@@ -189,3 +209,38 @@ Nach geprüftem Quellencommit: `python3 tools/export.py kurtz-landing`, dann
 `python3 tools/sync.py --consumer kurtz-landing --root /Users/ai/workspace/vela-swiftfin`
 und denselben Sync mit `--check`. Der Verbraucher darf nur seine eigene
 Darstellung/Bewegungssteuerung ändern; Zeichnungen kommen aus diesem Repo.
+
+## Kostüme
+
+Die Kostümteile und gemeinsamen Pose-Registrierungen liegen in
+`source/costumes/`. Das erste Kostüm `oma` ergänzt graue Perücke mit Dutt,
+dicke Brille und geblümten Arbeitskittel. Die Figur wird vor den bestehenden
+Verformungen angekleidet; Einzelzeichnungen, Pfotenkontakte, Pupillensteuerung,
+Clipzeiten und Ereignisse bleiben gemeinsame Quellen. Weitere Kostüme
+verwenden dieselben Befestigungspunkte. Details: [Kostümquellen](../source/costumes/README.md).
+
+`npm run export` baut die Kostüme bei geänderten Quellen automatisch und
+exportiert `manifest.costumes[id].pages` mit denselben Zelladressen wie das
+Original. Original und Kostüme werden gemeinsam dedupliziert. Die 128-, 256-
+und 512px-Exporte enthalten das Kostüm; die separaten Landing-Szenen bleiben
+eigenständige Zeichnungen.
+
+Web-Komponente: `<kurt-companion costume="oma">`, zur Laufzeit
+`element.costume = 'oma'` beziehungsweise `''`. Native Renderer:
+`view.setCostume("oma")` beziehungsweise `view.setCostume(nil)`; `false`
+bedeutet unbekanntes oder unvollständig installiertes Kostüm. Mutti-Player:
+`await animator.setCostume('oma')` beziehungsweise `setCostume('')`, ebenfalls
+mit booleschem Ergebnis. Ein Wechsel tauscht nur Texturen und setzt weder
+Animation noch Schluck-/Ablagemarker zurück. Produktspezifische Auswahl und
+Persistenz bleiben beim jeweiligen Verbraucher.
+
+Nach dem Export `source/costumes/preview.html` über HTTP öffnen und die
+fertigen Animationen einschließlich Wenden, Tragen, Fressen, Schlafen und
+Zaubern in beiden Richtungen mit Original und `references/` vergleichen.
+
+Native Verbraucher müssen auch `costumes/` rekursiv in ihr Artwork-Bundle
+übernehmen; eine alte feste Liste nur der Originalseiten reicht für das neue
+Kostüm nicht aus. Der Export und der sichere Sync enthalten diese Unterordner
+bereits. Die gezielten nativen Wechseltests stehen in
+`tests/KurtCostumeTests.swift` und können zusammen mit Hausers `KurtLabTests`
+im Regression-Testtarget ausgeführt werden.
